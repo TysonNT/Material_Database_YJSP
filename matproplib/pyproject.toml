@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "matprotlib"
+version = "0.0.2" 
+authors = [
+  { name="Tyson Tran", email="tyson26tran@gmail.com" },
+]
+description = "A clean and simple material property database."
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = [
+    "numpy",
+    "pandas",
+    "streamlit"
+]
+[project.scripts]
+matprotlib-ui = "matprotlib:launch_dashboard"
