@@ -2,7 +2,103 @@ import numpy as np
 import os
 import subprocess
 from .core import Material, MaterialRegistry
+# =========================================================================
+# NEW MATERIAL TEMPLATE
+# Copy this block, uncomment the lines, and fill in for each new material
+# Use Ctrl+/ (or Cmd+/) in most IDEs to quickly uncomment a highlighted block
+# =========================================================================
 
+# # 1. Initialize the Material Container
+# #    Name: Common name (e.g., "Titanium 6Al-4V")
+# #    Category: Metal, Ceramic, Composite, Plastic, Superalloy
+# #    Default Condition: Annealed, Aged, T6, Solution Treated, etc.
+# new_mat = Material(name="INSERT_NAME_HERE", category="General", default_condition="Standard")
+
+# # -------------------------------------------------------------------------
+# # A. MECHANICAL PROPERTIES
+# #    Format: [np.array([Temp1, Temp2...]), np.array([Val1, Val2...])]
+# #    Note: For constant values, just use a float instead of the lists
+# # -------------------------------------------------------------------------
+# new_mat.add_prop("density", 0.0, "kg/m^3") 
+
+# new_mat.add_prop("yield_strength", [
+#     np.array([293.15]), # Temp in Kelvin
+#     np.array([0.0])     # Value in Pa
+# ], "Pa")
+
+# new_mat.add_prop("ultimate_strength", [
+#     np.array([293.15]), 
+#     np.array([0.0])
+# ], "Pa")
+
+# new_mat.add_prop("elastic_modulus", [
+#     np.array([293.15]), 
+#     np.array([0.0])
+# ], "Pa")
+
+# new_mat.add_prop("shear_modulus", [
+#     np.array([293.15]), 
+#     np.array([0.0])
+# ], "Pa")
+
+# new_mat.add_prop("poisson_ratio", [
+#     np.array([293.15]), 
+#     np.array([0.0])
+# ], "") # Dimensionless
+
+# # -------------------------------------------------------------------------
+# # B. THERMAL PROPERTIES
+# # -------------------------------------------------------------------------
+# new_mat.add_prop("thermal_conductivity", [
+#     np.array([293.15]), 
+#     np.array([0.0])
+# ], "W/m-K")
+
+# new_mat.add_prop("specific_heat", [
+#     np.array([293.15]), 
+#     np.array([0.0])
+# ], "J/kg-K")
+
+# new_mat.add_prop("cte", [
+#     np.array([293.15]), 
+#     np.array([0.0])
+# ], "1/K") # Coeff. Thermal Expansion
+
+# new_mat.add_prop("melting_point", 0.0, "K") 
+
+# # -------------------------------------------------------------------------
+# # C. ELECTRICAL PROPERTIES (Optional)
+# # -------------------------------------------------------------------------
+# new_mat.add_prop("electrical_resistivity", [
+#     np.array([293.15]), 
+#     np.array([0.0])
+# ], "Ohm-m")
+
+# # -------------------------------------------------------------------------
+# # D. METADATA (Static info - stays as single values)
+# # -------------------------------------------------------------------------
+# new_mat.add_meta("carbon_content",      0.0) 
+# new_mat.add_meta("machinability_index", 0.0) # 0-100 Scale (100 = Free-machining brass)
+# new_mat.add_meta("heat_treatable",      False)
+# new_mat.add_meta("magnetic",            False)
+# new_mat.add_meta("weldability",         "Unknown")
+
+# # -------------------------------------------------------------------------
+# # E. FATIGUE DATA (S-N Curves)
+# #    Structure: { Temperature_K : [Cycles_Array, Stress_Array_Pa] }
+# # -------------------------------------------------------------------------
+# # new_mat.add_fatigue({
+# #     293.15: [ np.array([1e4, 1e5, 1e6]), np.array([0.0, 0.0, 0.0]) ], # Room Temp
+# #     500.00: [ np.array([1e4, 1e5, 1e6]), np.array([0.0, 0.0, 0.0]) ]  # Elevated Temp
+# # })
+
+# # -------------------------------------------------------------------------
+# # F. REGISTER (Save to Database)
+# # -------------------------------------------------------------------------
+# # db.add_material(new_mat)
+# ==========================================
+# ACTUAL DATA
+# ==========================================
 # Initialize the single database registry (NO 'db' variable)
 _default_registry = MaterialRegistry()
 
