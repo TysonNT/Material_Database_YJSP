@@ -3,8 +3,8 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "matproplib"
-version = "0.0.2" 
+name = "matprotlib"
+version = "0.1.4" 
 authors = [
   { name="Tyson Tran", email="tyson26tran@gmail.com" },
 ]

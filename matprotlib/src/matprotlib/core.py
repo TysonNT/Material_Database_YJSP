@@ -1,3 +1,4 @@
+
 import numpy as np
 from typing import Union, List, Dict, Optional, Any
 import warnings
@@ -61,18 +62,15 @@ class FatigueProfile:
 
 # --- 3. The Material Class ---
 class Material:
-    def __init__(self, name: str, category: str = "General", default_condition: str = "Standard"):
+    def __init__(self, name: str, category: str = "General", default_condition: str = "annealed"):
         self.name = name
         self.category = category
         self.default_condition = default_condition
         
         # Structure: { prop_name: { condition_name: Prop_Object } }
         self.properties: Dict[str, Dict[str, Prop]] = {}
-        
-        # Structure: { condition_name: FatigueProfile }
         self.fatigue: Dict[str, FatigueProfile] = {}
-        
-        self.metadata: Dict[str, Any] = {} 
+        self.metadata: Dict[str, Any] = {}
 
     def add_prop(self, key: str, data, units: str = "", condition: str = None):
         """Add a standard table/value property for a specific condition."""
@@ -126,6 +124,35 @@ class Material:
 
     def __repr__(self):
         return f"Material(Name='{self.name}', Default='{self.default_condition}', Props={len(self.properties)})"
+    def get(self, prop_name: str, T: float = 298.0, condition: str = None) -> float:
+        """Fetch a property, optionally at a specific temperature or condition."""
+        target_cond = condition if condition else self.default_condition
+        
+        if prop_name not in self.properties:
+            raise AttributeError(f"Material '{self.name}' has no property '{prop_name}'")
+        if target_cond not in self.properties[prop_name]:
+            raise AttributeError(f"'{prop_name}' found, but missing data for condition '{target_cond}'.")
+
+        return self.properties[prop_name][target_cond].get(T)
+
+    def __getattr__(self, item: str):
+        """
+        The magic method that allows `alloy.density`.
+        It automatically fetches the property at standard Room Temp (298K) 
+        using the default condition!
+        """
+        # 1. Prevent infinite recursion from Python's internal background checks
+        if item.startswith('__'):
+            raise AttributeError(f"'{self.__class__.__name__}' has no attribute '{item}'")
+        
+        # 2. Safely grab the properties dictionary without triggering getattr again
+        props = self.__dict__.get('properties', {})
+        
+        # 3. Check if the user's requested item is a valid property
+        if item in props:
+            return self.get(item, T=298.0) # Defaults to Room Temp
+        
+        raise AttributeError(f"'{self.__class__.__name__}' object has no attribute '{item}'")
 
 # --- 4. The Database Registry ---
 class MaterialRegistry:
@@ -133,13 +160,29 @@ class MaterialRegistry:
         self._db: Dict[str, Material] = {}
 
     def add_material(self, material: Material):
-        # Store by a unique key, typically Name + Condition
-        key = f"{material.name}_{material.default_condition}".replace(" ", "_").lower()
+        # CHANGE: Just use the name, replace spaces with underscores, and make it lowercase
+        key = material.name.replace(" ", "_").lower()
         self._db[key] = material
-        print(f"Registered: {material.name} ({material.default_condition})")
 
     def get_material(self, name_key: str) -> Material:
-        return self._db.get(name_key.lower())
+        # CHANGE: Format the user's search query the exact same way to guarantee a match
+        key = name_key.replace(" ", "_").lower()
+        return self._db.get(key)
 
     def list_materials(self):
         return list(self._db.keys())
+
+# --- 5. Module-Level API (The "mp" Interface) ---
+_default_registry = MaterialRegistry()
+
+def add_material(material: Material):
+    """Module-level wrapper to add a material to the default registry."""
+    _default_registry.add_material(material)
+
+def get_material(name_key: str) -> Material:
+    """Module-level wrapper to fetch a material."""
+    return _default_registry.get_material(name_key)
+
+def list_materials() -> List[str]:
+    """Module-level wrapper to list available materials."""
+    return _default_registry.list_materials()

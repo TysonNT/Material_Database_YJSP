@@ -1,0 +1,10 @@
+pyproject.toml
+src/matproplib/__init__.py
+src/matproplib/core.py
+src/matproplib/dashboard.py
+src/matproplib.egg-info/PKG-INFO
+src/matproplib.egg-info/SOURCES.txt
+src/matproplib.egg-info/dependency_links.txt
+src/matproplib.egg-info/entry_points.txt
+src/matproplib.egg-info/requires.txt
+src/matproplib.egg-info/top_level.txt

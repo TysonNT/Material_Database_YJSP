@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import matproplib as mp
+import matprotlib as mp
 
 # --- 1. Page Setup ---
 st.set_page_config(page_title="Material Explorer", layout="wide")
