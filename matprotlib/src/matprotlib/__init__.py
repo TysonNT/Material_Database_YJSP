@@ -194,7 +194,7 @@ al_6061_t6.add_meta("machinability_index", 50)
 _default_registry.add_material(al_6061_t6)
 
 # --- Aluminum 7075 ---
-#Source:https://gtvault.sharepoint.com/:b:/r/sites/AE-YellowJacketSpaceProgram/Shared%20Documents/0_YJSP%20Files%20(Sharepoint)/02_Engine_Dev/1_Engine%20Design/Engine%20Dev%20Code/Material%20Database/MMPDS%201.pdf?csf=1&web=1&e=FadTxd
+# Source:https://gtvault.sharepoint.com/:b:/r/sites/AE-YellowJacketSpaceProgram/Shared%20Documents/0_YJSP%20Files%20(Sharepoint)/02_Engine_Dev/1_Engine%20Design/Engine%20Dev%20Code/Material%20Database/MMPDS%201.pdf?csf=1&web=1&e=FadTxd
 al_7075_t6 = Material(name="Aluminum 7075", category="Metal", default_condition="T6")
 
 # -------------------------------------------------------------------------
