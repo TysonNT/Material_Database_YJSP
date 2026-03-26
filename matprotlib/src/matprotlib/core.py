@@ -72,87 +72,49 @@ class Material:
         self.fatigue: Dict[str, FatigueProfile] = {}
         self.metadata: Dict[str, Any] = {}
 
-    def add_prop(self, key: str, data, units: str = "", condition: str = None):
-        """Add a standard table/value property for a specific condition."""
-        cond = condition if condition else self.default_condition
-        
-        # Initialize the dictionary for this property if it doesn't exist
+    def add_prop(self, key: str, data, units: str = "", type: str = None):
+        """Add a standard table/value property for a specific type/condition."""
+        cond = type if type else self.default_condition
         if key not in self.properties:
             self.properties[key] = {}
-            
-        # Create and store the Prop object
         self.properties[key][cond] = Prop(key, data, units)
 
-    def add_custom_prop(self, prop_object: Prop, condition: str = None):
-        """
-        Use this for your NIST/Polynomial properties.
-        """
-        cond = condition if condition else self.default_condition
+    def add_custom_prop(self, prop_object: Prop, type: str = None):
+        cond = type if type else self.default_condition
         key = prop_object.name
-        
         if key not in self.properties:
             self.properties[key] = {}
-            
         self.properties[key][cond] = prop_object
 
-    def add_fatigue(self, curve_data: Dict[float, List[np.ndarray]], condition: str = None):
-        """Add S-N curve data for a specific condition."""
-        cond = condition if condition else self.default_condition
+    def add_fatigue(self, curve_data: Dict[float, List[np.ndarray]], type: str = None):
+        cond = type if type else self.default_condition
         self.fatigue[cond] = FatigueProfile(curve_data)
 
     def add_meta(self, key: str, value):
-        """Metadata is usually static across conditions, but you can overwrite if needed."""
         self.metadata[key] = value
 
-    def get(self, prop_name: str, T: float = 298.0, condition: str = None) -> float:
-        """
-        Get value. If condition is NOT provided, uses the material's default.
-        """
-        # 1. Determine which condition to look for
-        target_cond = condition if condition else self.default_condition
-        
-        # 2. Check if property exists
-        if prop_name not in self.properties:
-            raise KeyError(f"Material '{self.name}' has no property '{prop_name}'")
-            
-        # 3. Check if the specific condition exists for that property
-        if target_cond not in self.properties[prop_name]:
-            raise KeyError(f"Property '{prop_name}' found, but data for condition '{target_cond}' is missing.")
-
-        # 4. Fetch and Calculate
-        return self.properties[prop_name][target_cond].get(T)
-
-    def __repr__(self):
-        return f"Material(Name='{self.name}', Default='{self.default_condition}', Props={len(self.properties)})"
-    def get(self, prop_name: str, T: float = 298.0, condition: str = None) -> float:
-        """Fetch a property, optionally at a specific temperature or condition."""
-        target_cond = condition if condition else self.default_condition
+    def get(self, prop_name: str, T: float = 298.0, type: str = None) -> float:
+        """Fetch a property, optionally at a specific temperature or type."""
+        target_cond = type if type else self.default_condition
         
         if prop_name not in self.properties:
             raise AttributeError(f"Material '{self.name}' has no property '{prop_name}'")
         if target_cond not in self.properties[prop_name]:
-            raise AttributeError(f"'{prop_name}' found, but missing data for condition '{target_cond}'.")
+            raise AttributeError(f"'{prop_name}' found, but missing data for type '{target_cond}'.")
 
         return self.properties[prop_name][target_cond].get(T)
 
     def __getattr__(self, item: str):
-        """
-        The magic method that allows `alloy.density`.
-        It automatically fetches the property at standard Room Temp (298K) 
-        using the default condition!
-        """
-        # 1. Prevent infinite recursion from Python's internal background checks
         if item.startswith('__'):
             raise AttributeError(f"'{self.__class__.__name__}' has no attribute '{item}'")
-        
-        # 2. Safely grab the properties dictionary without triggering getattr again
         props = self.__dict__.get('properties', {})
-        
-        # 3. Check if the user's requested item is a valid property
         if item in props:
-            return self.get(item, T=298.0) # Defaults to Room Temp
-        
+            return self.get(item, T=298.0) 
         raise AttributeError(f"'{self.__class__.__name__}' object has no attribute '{item}'")
+
+    def __repr__(self):
+        return f"Material(Name='{self.name}', Default='{self.default_condition}', Props={len(self.properties)})"
+
 
 # --- 4. The Database Registry ---
 class MaterialRegistry:
@@ -160,12 +122,10 @@ class MaterialRegistry:
         self._db: Dict[str, Material] = {}
 
     def add_material(self, material: Material):
-        # CHANGE: Just use the name, replace spaces with underscores, and make it lowercase
         key = material.name.replace(" ", "_").lower()
         self._db[key] = material
 
     def get_material(self, name_key: str) -> Material:
-        # CHANGE: Format the user's search query the exact same way to guarantee a match
         key = name_key.replace(" ", "_").lower()
         return self._db.get(key)
 
