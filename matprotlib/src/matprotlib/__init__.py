@@ -108,6 +108,7 @@ from .core import Material, MaterialRegistry
 #
 # [COPP] COPPER ALLOYS
 #        - Copper C101
+#        - Copper C11000
 #        - Copper C17200
 #        - CuCrZr
 #        - GRCop-42
@@ -133,6 +134,9 @@ from .core import Material, MaterialRegistry
 # [COMP] COMPOSITES
 #        - Carbon Fiber
 #        - Fiberglass
+
+# [CERM] CERAMICS & NON-METALS   
+#        - Graphite
 # =========================================================================
 
 
@@ -142,7 +146,6 @@ from .core import Material, MaterialRegistry
 # ==========================================
 # ACTUAL DATA
 # ==========================================
-# Initialize the single database registry (NO 'db' variable)
 _default_registry = MaterialRegistry()
 
 # =========================================================================
@@ -151,7 +154,7 @@ _default_registry = MaterialRegistry()
 # =========================================================================
 # =========================================================================
 
-  # --- Aluminum 6061 ---
+# --- Aluminum 6061 ---
 #Sources:
 # 1. https://trc.nist.gov/cryogenics/materials/6061%20Aluminum/6061_T6Aluminum_rev.htm
 # 2. https://gtvault.sharepoint.com/:b:/r/sites/AE-YellowJacketSpaceProgram/Shared%20Documents/0_YJSP%20Files%20(Sharepoint)/02_Engine_Dev/1_Engine%20Design/Engine%20Dev%20Code/Material%20Database/MMPDS%201.pdf?csf=1&web=1&e=IYBleV
@@ -160,37 +163,57 @@ al_6061_t6 = Material(name="Aluminum 6061", category="Metal", default_condition=
 # -------------------------------------------------------------------------
 # A. MECHANICAL PROPERTIES
 # -------------------------------------------------------------------------
-al_6061_t6.add_prop("elastic_modulus", [
-    np.array([294.15,366.15,477.15,589.15,700.15,811.15,922.15,1033.15,1144.15]), 
-    np.array([77.7488e9, 77.6022e9, 76.611e9, 75.1722e9, 73.5585e9, 71.8825e9, 70.09578e9, 68e9, 65e9]) 
-], "Pa")
+al_6061_t6.add_prop("density", 2700.0, "kg/m^3")
+
 al_6061_t6.add_prop("yield_strength", [
     np.array([9.672,18.862,26.074,32.633,39.851,48.381,58.894,63.489,71.909,79.458,81.896,85.610,97.042,110.206,124.694,133.471,144.894,156.879,164.438,172.137,186.648,201.153,215.661,230.168,244.678,259.186,273.694,288.200,302.708,317.211,331.712,346.212,360.707,373.881,388.372,401.537,413.852,427.991,441.262,451.417,461.663,471.766,480.356,491.767,501.158,508.154,518.747,528.757,536.176,543.928,551.512,561.556,572.079,585.136,598.128,611.951,629.079,642.126]), # Temp in Kelvin
     np.array([4.403e8,4.284e8,4.169e8,4.071e8,3.970e8,3.849e8,3.738e8,3.678e8,3.621e8,3.566e8,3.499e8,3.438e8,3.416e8,3.326e8,3.249e8,3.190e8,3.148e8,3.107e8,3.076e8,3.051e8,3.025e8,2.984e8,2.953e8,2.918e8,2.889e8,2.855e8,2.822e8,2.785e8,2.753e8,2.707e8,2.658e8,2.606e8,2.544e8,2.477e8,2.405e8,2.320e8,2.230e8,2.154e8,2.037e8,1.957e8,1.859e8,1.767e8,1.659e8,1.537e8,1.424e8,1.338e8,1.236e8,1.131e8,1.037e8,9.516e7,8.506e7,7.608e7,6.702e7,5.716e7,5.028e7,4.115e7,3.308e7,2.766e7])     # Value in Pa
 ], "Pa")
+
 al_6061_t6.add_prop("ultimate_strength", [
     np.array([470.256,476.567,482.543,489.964,497.309,505.041,512.773,520.894,525.414,531.555,534.813,543.319,551.827,560.398,568.842,577.351,586.395,594.369,602.878,611.388,619.900,628.412,636.925,643.117]), 
     np.array([3.064e8,2.973e8,2.889e8,2.802e8,2.719e8,2.634e8,2.555e8,2.486e8,2.444e8,2.397e8,2.340e8,2.262e8,2.184e8,2.107e8,2.035e8,1.967e8,1.898e8,1.846e8,1.778e8,1.724e8,1.677e8,1.635e8,1.596e8,1.569e8])
 ], "Pa")
-al_6061_t6.add_prop("density", 2700.0, "kg/m^3")
+
+al_6061_t6.add_prop("elastic_modulus", [
+    np.array([294.15,366.15,477.15,589.15,700.15,811.15,922.15,1033.15,1144.15]), 
+    np.array([77.7488e9, 77.6022e9, 76.611e9, 75.1722e9, 73.5585e9, 71.8825e9, 70.09578e9, 68e9, 65e9]) 
+], "Pa")
+
 al_6061_t6.add_prop("poisson_ratio", 0.33, "")
 
+# -------------------------------------------------------------------------
+# B. THERMAL PROPERTIES
+# -------------------------------------------------------------------------
 al_6061_t6.add_prop("thermal_conductivity", [
     np.array([0, 50, 100, 150, 200, 250, 300]), 
     np.array([5.3474,62.0481,97.7012,120.3629,136.0252,147.2427,155.3188]) 
 ], "W/m-K")
+
 al_6061_t6.add_prop("specific_heat", [
     np.array([0, 50, 100, 150, 200, 250, 300]), 
     np.array([0.292, 148.8382, 492.1982,713.0314,835.2390,895.0404,953.8644]) 
 ], "J/kg-K")
+
 al_6061_t6.add_prop("cte", [
-    np.array([21.156,27.523,33.986,40.122,46.622,52.492,59.355,65.721,72.088,78.647,84.821,91.187,97.795,103.679,110.287,116.653,123.020,129.386,135.753,142.119,148.753,153.566,159.482,165.849,172.215,178.582,184.948,191.314,196.017,201.421,204.481,209.835,216.202,222.568,228.934,235.301,241.436,239.352,247.455,252.896,259.030,265.397,271.763,278.130,284.496,286.580,292.599,298.503,3.070,7.368,12.895,17.193]),
-    np.array([0.858,0.856,0.854,0.849,0.845,0.837,0.835,0.829,0.822,0.813,0.802,0.791,0.779,0.767,0.753,0.739,0.725,0.710,0.694,0.676,0.662,0.645,0.629,0.611,0.590,0.570,0.550,0.530,0.509,0.499,0.479,0.467,0.445,0.423,0.400,0.378,0.347,0.362,0.332,0.311,0.289,0.266,0.242,0.217,0.192,0.172,0.162,0.147,0.859,0.859,0.861,0.859]) 
+    np.array([3.5872e1, 4.9706e1, 5.6483e1, 6.2928e1, 6.9428e1, 7.5983e1, 8.1983e1, 8.5039e1, 9.1761e1, 1.0071e2, 1.1015e2, 1.1982e2, 1.2948e2, 1.3037e2, 1.3648e2, 1.4254e2, 1.4965e2, 1.5987e2, 1.7071e2, 1.8032e2, 1.9065e2, 2.0166e2, 2.1196e2, 2.1803e2, 2.3162e2, 2.4265e2, 2.5287e2, 2.6348e2, 2.7332e2, 2.8355e2, 2.9346e2, 3.0340e2, 3.1365e2, 3.2443e2, 3.3465e2, 3.4498e2, 3.5509e2, 3.6532e2, 3.7554e2, 3.8609e2, 3.9598e2, 4.0582e2, 4.1643e2, 4.2615e2, 4.3687e2, 4.4698e2, 4.5732e2, 4.6754e2, 4.7787e2, 4.8798e2, 4.9821e2, 5.0848e2, 5.1865e2, 5.2926e2, 5.3915e2, 5.4937e2, 5.5959e2, 5.6976e2, 5.7998e2, 5.8982e2]),
+    np.array([1.5712e-5, 1.6387e-5, 1.6913e-5, 1.7300e-5, 1.7609e-5, 1.7978e-5, 1.8270e-5, 1.8432e-5, 1.8702e-5, 1.9008e-5, 1.9314e-5, 1.9674e-5, 2.0088e-5, 1.9944e-5, 2.0214e-5, 2.0376e-5, 2.0538e-5, 2.0772e-5, 2.0988e-5, 2.1204e-5, 2.1474e-5, 2.1546e-5, 2.1708e-5, 2.1870e-5, 2.2104e-5, 2.2140e-5, 2.2266e-5, 2.2374e-5, 2.2500e-5, 2.2608e-5, 2.2716e-5, 2.2824e-5, 2.2878e-5, 2.3004e-5, 2.3076e-5, 2.3202e-5, 2.3346e-5, 2.3418e-5, 2.3472e-5, 2.3526e-5, 2.3598e-5, 2.3850e-5, 2.3868e-5, 2.3976e-5, 2.4066e-5, 2.4156e-5, 2.4264e-5, 2.4372e-5, 2.4480e-5, 2.4570e-5, 2.4660e-5, 2.4768e-5, 2.4858e-5, 2.4948e-5, 2.5128e-5, 2.5200e-5, 2.5254e-5, 2.5308e-5, 2.5362e-5, 2.5488e-5]) 
 ], "1/K")
+
 al_6061_t6.add_prop("melting_point", 855.0, "K") 
 
-al_6061_t6.add_meta("heat_treatable", True)
-al_6061_t6.add_meta("machinability_index", 50) 
+# -------------------------------------------------------------------------
+# D. METADATA 
+# -------------------------------------------------------------------------
+al_6061_t6.add_meta("carbon_content",      0.0) 
+al_6061_t6.add_meta("machinability_index", 50.0) 
+al_6061_t6.add_meta("heat_treatable",      True)
+al_6061_t6.add_meta("magnetic",            False)
+al_6061_t6.add_meta("weldability",         "Excellent")
+
+# -------------------------------------------------------------------------
+# F. REGISTER (Save to Database)
+# -------------------------------------------------------------------------
 _default_registry.add_material(al_6061_t6)
 
 # --- Aluminum 7075 ---
@@ -258,11 +281,12 @@ al_7075_t6.add_meta("weldability",         "Poor") # 7075 is notoriously difficu
 # -------------------------------------------------------------------------
 _default_registry.add_material(al_7075_t6)
 
+# --- AlSi10Mg ---
 
-# ---- AlSi10Mg -----
-#Source:
+# Sources:
 # 1. https://www.eos.info/var/assets/03_system-related-assets/material-related-contents/metal-materials-and-examples/metal-material-datasheet/aluminium/material_datasheet_eos_aluminium-alsi10mg_en_web.pdf
 # 2. https://pmc.ncbi.nlm.nih.gov/articles/PMC9612077/
+
 alsi10mg = Material(name="AlSi10Mg", category="Metal", default_condition="Stress Relieved / T6")
 
 # -------------------------------------------------------------------------
@@ -271,8 +295,8 @@ alsi10mg = Material(name="AlSi10Mg", category="Metal", default_condition="Stress
 alsi10mg.add_prop("density", 2670.0, "kg/m^3")
 
 alsi10mg.add_prop("yield_strength", [
-    np.array([293.15, 373.15, 423.15, 473.15, 523.15, 723.15]), # Temp in Kelvin (20C, 100C, 150C, 200C, 250C, 450C)
-    np.array([165.94e6, 181.0e6, 182.0e6, 158.0e6, 132.0e6, 35.0e6]) # Value in Pa
+    np.array([293.15, 373.15, 423.15, 473.15, 523.15, 723.15]), 
+    np.array([165.94e6, 181.0e6, 182.0e6, 158.0e6, 132.0e6, 35.0e6])
 ], "Pa")
 
 alsi10mg.add_prop("ultimate_strength", [
@@ -282,26 +306,26 @@ alsi10mg.add_prop("ultimate_strength", [
 
 alsi10mg.add_prop("elastic_modulus", 70.0e9, "Pa")
 
-alsi10mg.add_prop("shear_modulus", 26.31e9, "Pa") # Calculated via E / 2(1+v)
+alsi10mg.add_prop("shear_modulus", 26.31e9, "Pa") 
 
-alsi10mg.add_prop("poisson_ratio", 0.33, "") # Dimensionless
+alsi10mg.add_prop("poisson_ratio", 0.33, "")
 
 # -------------------------------------------------------------------------
 # B. THERMAL PROPERTIES
 # -------------------------------------------------------------------------
-alsi10mg.add_prop("thermal_conductivity", 160.0, "W/m-K") # Post heat-treatment average
+alsi10mg.add_prop("thermal_conductivity", 160.0, "W/m-K") 
 
 alsi10mg.add_prop("specific_heat", 880.0, "J/kg-K")
 
 alsi10mg.add_prop("cte", [
-    np.array([373.15, 473.15, 573.15]), # Tested bands: 100C, 200C, 300C
+    np.array([373.15, 473.15, 573.15]), 
     np.array([20.0e-6, 22.0e-6, 27.0e-6])
-], "1/K") # Coeff. Thermal Expansion
+], "1/K") 
 
-alsi10mg.add_prop("melting_point", 843.15, "K") # Approx 570 C (Onset of melting)
+alsi10mg.add_prop("melting_point", 843.15, "K") 
 
 # -------------------------------------------------------------------------
-# C. ELECTRICAL PROPERTIES (Optional)
+# C. ELECTRICAL PROPERTIES
 # -------------------------------------------------------------------------
 alsi10mg.add_prop("electrical_resistivity", [
     np.array([293.15, 373.15]), # Extrapolated using alpha = 0.0039 1/K
@@ -309,7 +333,7 @@ alsi10mg.add_prop("electrical_resistivity", [
 ], "Ohm-m")
 
 # -------------------------------------------------------------------------
-# D. METADATA (Static info - stays as single values)
+# D. METADATA 
 # -------------------------------------------------------------------------
 alsi10mg.add_meta("carbon_content",      0.0) 
 alsi10mg.add_meta("machinability_index", 75.0) # 0-100 Scale
@@ -319,7 +343,6 @@ alsi10mg.add_meta("weldability",         "Good")
 
 # -------------------------------------------------------------------------
 # E. FATIGUE DATA (S-N Curves)
-#    Structure: { Temperature_K : }
 # -------------------------------------------------------------------------
 alsi10mg.add_fatigue({
     293.15: [ np.array([1e5, 1e6, 1e7, 1e8]), np.array([180.0e6, 130.0e6, 110.0e6, 87.0e6]) ] # Room Temp
@@ -337,7 +360,7 @@ _default_registry.add_material(alsi10mg)
 # =========================================================================
 # =========================================================================
 
-#----- Copper C101 -------
+# --- Copper C101 ---
 
 # Sources:
 # 1. https://nvlpubs.nist.gov/nistpubs/Legacy/MONO/nistmonograph177.pdf
@@ -352,7 +375,7 @@ c101 = Material(name="Copper C101", category="Metal", default_condition="Anneale
 c101.add_prop("density", 8920.0, "kg/m^3") 
 
 c101.add_prop("yield_strength", [
-    np.array([4.0, 76.0, 195.0, 293.15, 500.0]), # Temp in Kelvin
+    np.array([4.0, 76.0, 195.0, 293.15, 500.0]), 
     np.array([404.0e6, 375.0e6, 343.3e6, 69.0e6, 50.0e6])
 ], "Pa")
 
@@ -397,7 +420,7 @@ c101.add_prop("cte", [
 c101.add_prop("melting_point", 1356.15, "K") 
 
 # -------------------------------------------------------------------------
-# C. ELECTRICAL PROPERTIES (Optional)
+# C. ELECTRICAL PROPERTIES 
 # -------------------------------------------------------------------------
 c101.add_prop("electrical_resistivity", [
     np.array([4.0, 76.0, 293.15, 500.0]), 
@@ -405,7 +428,7 @@ c101.add_prop("electrical_resistivity", [
 ], "Ohm-m")
 
 # -------------------------------------------------------------------------
-# D. METADATA (Static info - stays as single values)
+# D. METADATA
 # -------------------------------------------------------------------------
 c101.add_meta("carbon_content",      0.0) 
 c101.add_meta("machinability_index", 20.0) # 0-100 Scale (100 = Free-machining brass)
@@ -415,11 +438,10 @@ c101.add_meta("weldability",         "Fair")
 
 # -------------------------------------------------------------------------
 # E. FATIGUE DATA (S-N Curves)
-#    Structure: { Temperature_K : }
 # -------------------------------------------------------------------------
 c101.add_fatigue({
-    293.15: [ np.array([1e4, 1e5, 1e6, 1e8]), np.array([150e6, 120e6, 105e6, 97e6]) ], # Room Temp HCF Approximation
-    673.15: [ np.array([1e4, 1e5, 1e6]), np.array([80e6, 60e6, 40e6]) ]  # Elevated Temp Degradation
+    293.15: [ np.array([1e4, 1e5, 1e6, 1e8]), np.array([150e6, 120e6, 105e6, 97e6]) ], 
+    673.15: [ np.array([1e4, 1e5, 1e6]), np.array([80e6, 60e6, 40e6]) ]  
 })
 
 # -------------------------------------------------------------------------
@@ -427,11 +449,11 @@ c101.add_fatigue({
 # -------------------------------------------------------------------------
 _default_registry.add_material(c101)
 
-#---Copper C11000-------
+# --- Copper C11000 ---
 
 # Sources:
-# 1.https://www.copper.org/resources/properties/db/basic-search.php?alloys-select%5B%5D=C10200&alloys-select%5B%5D=C11000&alloys-select%5B%5D=C12200&alloy-select-properties%5B%5D=chemical&alloy-select-properties%5B%5D=mechanical&alloy-select-properties%5B%5D=physical&alloy-select-properties%5B%5D=thermal&submit-multiple-alloys=Display
-# 2.https://www.aurubis.com/en/dam/jcr:ec116d17-1541-419a-a897-ad31b4fa6c93/c11000-cu-etp-us.pdf
+# 1. https://www.copper.org/resources/properties/db/basic-search.php?alloys-select%5B%5D=C10200&alloys-select%5B%5D=C11000&alloys-select%5B%5D=C12200&alloy-select-properties%5B%5D=chemical&alloy-select-properties%5B%5D=mechanical&alloy-select-properties%5B%5D=physical&alloy-select-properties%5B%5D=thermal&submit-multiple-alloys=Display
+# 2. https://www.aurubis.com/en/dam/jcr:ec116d17-1541-419a-a897-ad31b4fa6c93/c11000-cu-etp-us.pdf
 
 c11000 = Material(name="Copper C11000", category="Metal", default_condition="Annealed")
 
@@ -441,23 +463,23 @@ c11000 = Material(name="Copper C11000", category="Metal", default_condition="Ann
 c11000.add_prop("density", 8890.0, "kg/m^3")
 
 c11000.add_prop("yield_strength", [
-    np.array([293.15, 473.15]), # Temp in Kelvin (20C, 200C)
-    np.array([69.0e6, 55.0e6])  # Value in Pa (Accounting for thermal softening drop)
+    np.array([293.15, 473.15]), 
+    np.array([69.0e6, 55.0e6])  
 ], "Pa")
 
 c11000.add_prop("ultimate_strength", [
-    np.array([293.15, 473.15]), # Temp in Kelvin
-    np.array([220.0e6, 185.0e6])# Value in Pa 
+    np.array([293.15, 473.15]), 
+    np.array([220.0e6, 185.0e6])
 ], "Pa")
 
 c11000.add_prop("elastic_modulus", [
-    np.array([293.15, 473.15]), # E(T) = 137 - 1.27e-3 * T^2 GPa
-    np.array([115.0e9, 108.0e9])# Value in Pa
+    np.array([293.15, 473.15]), 
+    np.array([115.0e9, 108.0e9])
 ], "Pa")
 
 c11000.add_prop("shear_modulus", 44.0e9, "Pa")
 
-c11000.add_prop("poisson_ratio", 0.34, "") # Dimensionless
+c11000.add_prop("poisson_ratio", 0.34, "") 
 
 # -------------------------------------------------------------------------
 # B. THERMAL PROPERTIES
@@ -477,31 +499,27 @@ c11000.add_prop("cte", [
     np.array([17.0e-6, 17.0e-6, 17.3e-6, 17.7e-6])
 ], "1/K") # Coeff. Thermal Expansion
 
-c11000.add_prop("melting_point", 1358.15, "K") # Liquidus limit
+c11000.add_prop("melting_point", 1358.15, "K") 
 
 # -------------------------------------------------------------------------
-# C. ELECTRICAL PROPERTIES (Optional)
+# C. ELECTRICAL PROPERTIES 
 # -------------------------------------------------------------------------
-c11000.add_prop("electrical_resistivity", [
-    np.array([293.15]),
-    np.array([1.71e-8])
-], "Ohm-m")
+c11000.add_prop("electrical_resistivity", 1.71e-8, "Ohm-m")
 
 # -------------------------------------------------------------------------
-# D. METADATA (Static info - stays as single values)
+# D. METADATA 
 # -------------------------------------------------------------------------
 c11000.add_meta("carbon_content",      0.0) 
-c11000.add_meta("machinability_index", 20.0) # 0-100 Scale (100 = Free-machining brass)
+c11000.add_meta("machinability_index", 20.0) 
 c11000.add_meta("heat_treatable",      False)
 c11000.add_meta("magnetic",            False)
 c11000.add_meta("weldability",         "Poor (Susceptible to H2 embrittlement)")
 
 # -------------------------------------------------------------------------
 # E. FATIGUE DATA (S-N Curves)
-#    Structure: { Temperature_K : }
 # -------------------------------------------------------------------------
 c11000.add_fatigue({
-    293.15: [ np.array([1e4, 1e5, 1e6]), np.array([136.0e6, 115.0e6, 97.0e6]) ] # Calculated via Sigma = 271 * N^-0.074
+    293.15: [ np.array([1e4, 1e5, 1e6]), np.array([136.0e6, 115.0e6, 97.0e6]) ]
 })
 
 # -------------------------------------------------------------------------
@@ -509,40 +527,33 @@ c11000.add_fatigue({
 # -------------------------------------------------------------------------
 _default_registry.add_material(c11000)
 
-#---Copper C17200-------
+# --- Copper C17200 ---
 
 # Sources:
 # 1. https://gtvault.sharepoint.com/:b:/r/sites/AE-YellowJacketSpaceProgram/Shared%20Documents/0_YJSP%20Files%20(Sharepoint)/02_Engine_Dev/1_Engine%20Design/Engine%20Dev%20Code/Material%20Database/MMPDS%201.pdf?csf=1&web=1&e=NAsjP9
 # 2. https://pmc.ncbi.nlm.nih.gov/articles/PMC9864880/
 # 3. https://www.uddeholm.com/app/uploads/sites/230/2024/06/Beryllium-Copper-172-HH.pdf
+
 c17200 = Material(name="Copper C17200", category="Metal", default_condition="TH04")
+
 # -------------------------------------------------------------------------
 # A. MECHANICAL PROPERTIES
-#    Format:), np.array([Val1, Val2...])]
-#    Note: For constant values, just use a float instead of the lists
 # -------------------------------------------------------------------------
-
-# Density drops slightly at elevated temperatures due to volumetric thermal expansion.
-# Base RT density ~8350 kg/m^3. Drop at 473.15K (200C) is to 8276 kg/m^3.
 c17200.add_prop("density", [
     np.array([293.15, 473.15]), 
     np.array([8350.0, 8276.0])
 ], "kg/m^3")
 
-# Yield strength retains high stability to ~473K (200C), 
-# dropping severely past 573K (300C) due to precipitate coarsening.
 c17200.add_prop("yield_strength", [
     np.array([293.15, 423.15, 473.15, 523.15, 573.15, 623.15]),
     np.array([1070e6, 1070e6, 1070e6, 1040e6, 900e6, 570e6])     
 ], "Pa")
 
-# Ultimate strength remains highly stable to 200C, measurable drop at 250C, severe drop at 350C.
 c17200.add_prop("ultimate_strength", [
     np.array([3.0219e2, 3.1733e2, 3.3198e2, 3.4662e2, 3.6113e2, 3.7595e2, 3.9105e2, 4.0525e2, 4.2025e2, 4.3745e2, 4.5325e2, 4.6775e2, 4.8235e2, 4.9845e2, 5.1295e2, 5.2735e2, 5.4375e2, 5.5825e2, 5.7305e2, 5.8735e2, 6.0215e2, 6.1695e2, 6.2745e2, 6.3465e2, 6.4265e2, 6.5065e2, 6.5855e2, 6.6655e2, 6.7445e2, 6.8245e2, 6.9035e2, 6.9835e2, 7.0625e2, 7.1425e2, 7.2215e2]),
     np.array([1.1190e9, 1.1200e9, 1.1210e9, 1.1220e9, 1.1230e9, 1.1240e9, 1.1250e9, 1.1260e9, 1.1260e9, 1.1250e9, 1.1220e9, 1.1210e9, 1.1190e9, 1.1160e9, 1.1150e9, 1.1130e9, 1.1100e9, 1.1090e9, 1.1070e9, 1.1050e9, 1.1030e9, 1.1010e9, 1.0950e9, 1.0840e9, 1.0730e9, 1.0610e9, 1.0500e9, 1.0390e9, 1.0280e9, 1.0170e9, 1.0060e9, 9.9500e8, 9.8410e8, 9.7290e8, 9.6170e8])
 ], "Pa")
 
-# Elastic modulus demonstrates high-temperature softening, dropping from 131.1 GPa at 20C to 124.0 GPa at 200C.
 c17200.add_prop("elastic_modulus", [
     np.array([293.15, 473.15]),
     np.array([131.1e9, 124.0e9])
@@ -550,7 +561,7 @@ c17200.add_prop("elastic_modulus", [
 
 c17200.add_prop("shear_modulus", 50.0e9, "Pa")
 
-c17200.add_prop("poisson_ratio", 0.30, "") # Dimensionless
+c17200.add_prop("poisson_ratio", 0.30, "") 
 # -------------------------------------------------------------------------
 # B. THERMAL PROPERTIES
 # -------------------------------------------------------------------------
@@ -568,13 +579,13 @@ c17200.add_prop("specific_heat", [
 c17200.add_prop("cte", [
      np.array([2.5872e1, 3.6150e1, 4.5206e1, 6.9817e1, 8.2706e1, 9.5594e1, 1.0848e2, 1.2098e2, 1.3421e2, 1.5998e2, 1.7282e2, 1.8571e2, 1.9859e2, 2.1143e2, 2.2474e2, 2.3762e2, 2.5002e2, 2.6287e2, 2.7572e2, 2.8857e2, 3.0191e2, 3.1504e2, 3.2832e2, 3.4098e2, 3.5404e2, 3.6687e2, 3.7971e2, 3.9259e2, 4.0543e2, 4.1826e2, 4.3115e2, 4.4398e2, 4.5682e2, 4.6965e2, 4.8254e2, 4.9537e2, 5.0821e2, 5.2171e2, 5.3393e2, 5.4676e2, 5.5987e2, 5.8817e1, 1.4676e2]), 
      np.array([1.1956e-5, 1.2276e-5, 1.2598e-5, 1.3223e-5, 1.3527e-5, 1.3817e-5, 1.4096e-5, 1.4321e-5, 1.4537e-5, 1.4972e-5, 1.5161e-5, 1.5331e-5, 1.5498e-5, 1.5642e-5, 1.5791e-5, 1.5971e-5, 1.6126e-5, 1.6195e-5, 1.6252e-5, 1.6317e-5, 1.6425e-5, 1.6567e-5, 1.6666e-5, 1.6754e-5, 1.6837e-5, 1.6940e-5, 1.7014e-5, 1.7086e-5, 1.7170e-5, 1.7242e-5, 1.7298e-5, 1.7352e-5, 1.7415e-5, 1.7485e-5, 1.7539e-5, 1.7588e-5, 1.7642e-5, 1.7753e-5, 1.7786e-5, 1.7896e-5, 1.7863e-5, 1.2888e-5, 1.4729e-5])
- ], "1/K") # Coeff. Thermal Expansion
+ ], "1/K")
 
 
-c17200.add_prop("melting_point", 1138.15, "K") # Solidus temperature (865C)
+c17200.add_prop("melting_point", 1138.15, "K") 
 
 # -------------------------------------------------------------------------
-# C. ELECTRICAL PROPERTIES (Optional)
+# C. ELECTRICAL PROPERTIES 
 # -------------------------------------------------------------------------
 
 c17200.add_prop("electrical_resistivity", 7.68e-8, "Ohm-m")
@@ -583,17 +594,14 @@ c17200.add_prop("electrical_resistivity", 7.68e-8, "Ohm-m")
 # D. METADATA (Static info - stays as single values)
 # -------------------------------------------------------------------------
 c17200.add_meta("carbon_content",      0.0) 
-c17200.add_meta("machinability_index", 20.0) # 0-100 Scale (100 = Free-machining brass)
+c17200.add_meta("machinability_index", 20.0) 
 c17200.add_meta("heat_treatable",      True)
-c17200.add_meta("magnetic",            False) # Permeability < 1.001
+c17200.add_meta("magnetic",            False) 
 c17200.add_meta("weldability",         "Good/Fair (Soldering, Brazing, Arc; Avoid Oxyacetylene)")
 
 # -------------------------------------------------------------------------
 # E. FATIGUE DATA (S-N Curves)
-#    Structure: { Temperature_K : }
 # -------------------------------------------------------------------------
-# Fatigue endurance limits at 1x10^7 cycles across four distinct thermal gradients.
-# Severe oxidative degradation is observed at 450C (723.15K).
 c17200.add_fatigue({
     298.15: [ np.array([1e7]), np.array([441.8e6]) ], # 25 C
     423.15: [ np.array([1e7]), np.array([409.4e6]) ], # 150 C
@@ -606,85 +614,72 @@ c17200.add_fatigue({
 # -------------------------------------------------------------------------
 _default_registry.add_material(c17200)
 
-# ---- CuCrZr -----
-#Source:
-# 1.https://scientific-publications.ukaea.uk/wp-content/uploads/DEVELOPMENT-OF-THE-MATERIAL-PROPERTY-HANDBOOK-AND-DATABASE-OF-CUCRZR.PDF
-# 2.https://pure.mpg.de/rest/items/item_3065423_6/component/file_3126088/content 
+# --- CuCrZr ---
+
+# Sources:
+# 1. https://scientific-publications.ukaea.uk/wp-content/uploads/DEVELOPMENT-OF-THE-MATERIAL-PROPERTY-HANDBOOK-AND-DATABASE-OF-CUCRZR.PDF
+# 2. https://pure.mpg.de/rest/items/item_3065423_6/component/file_3126088/content 
+
 cucrzr = Material(name="CuCrZr", category="Metal", default_condition="SAA")
 
 # -------------------------------------------------------------------------
 # A. MECHANICAL PROPERTIES
 # -------------------------------------------------------------------------
 
-# Density: 8.90 g/cm^3 -> 8900 kg/m^3
 cucrzr.add_prop("density", 8900.0, "kg/m^3")
 
-# Yield Strength: YS = 281.39 - 0.2227*(T_C) MPa
 cucrzr.add_prop("yield_strength", [
     np.array([3.0134e2, 3.2930e2, 3.7253e2, 4.0045e2, 4.2845e2, 4.5645e2, 4.8435e2, 5.1235e2, 5.4025e2, 5.6735e2, 6.0055e2, 6.2565e2, 6.6095e2, 6.8925e2, 7.1515e2, 7.5055e2, 7.7145e2, 7.9455e2, 8.1775e2, 8.4105e2, 8.6805e2, 8.9505e2, 9.1235e2, 9.3015e2, 9.5015e2, 9.6985e2]), 
     np.array([2.8220e8, 2.7730e8, 2.7580e8, 2.7190e8, 2.6450e8, 2.6010e8, 2.5330e8, 2.4580e8, 2.4020e8, 2.2550e8, 2.2160e8, 2.1050e8, 2.0260e8, 1.9350e8, 1.8630e8, 1.7430e8, 1.6530e8, 1.6010e8, 1.4760e8, 1.3640e8, 1.3230e8, 1.1550e8, 1.1100e8, 1.0340e8, 9.1880e7, 8.1070e7])    
 ], "Pa")
 
-# Ultimate Strength: UTS = 413.45 - 0.42631*(T_C) MPa
 cucrzr.add_prop("ultimate_strength", [
     np.array([2.9929e2, 3.2717e2, 3.5505e2, 3.8295e2, 4.1085e2, 4.3865e2, 4.6655e2, 4.9445e2, 5.2235e2, 5.5025e2, 5.7805e2, 6.0595e2, 6.3385e2, 6.6175e2, 6.8965e2, 7.1755e2, 7.4535e2, 7.7325e2, 8.0115e2, 8.2905e2, 8.5695e2, 8.8475e2, 9.1265e2, 9.4055e2, 9.6465e2]),
     np.array([4.0250e8, 3.9020e8, 3.8030e8, 3.6840e8, 3.5650e8, 3.4470e8, 3.3370e8, 3.2080e8, 3.0890e8, 2.9710e8, 2.8720e8, 2.7330e8, 2.6170e8, 2.5070e8, 2.3790e8, 2.2600e8, 2.1410e8, 2.0210e8, 1.9040e8, 1.7860e8, 1.6670e8, 1.5480e8, 1.4320e8, 1.3130e8, 1.2120e8])
 ], "Pa")
 
-# Elastic Modulus: E = 129.91 - 3.3692e-2*(T_C) - 4.1707e-5*(T_C)^2 GPa
 cucrzr.add_prop("elastic_modulus", [
     np.array([3.0675e2, 3.3445e2, 3.6051e2, 3.8745e2, 4.1365e2, 4.3835e2, 4.6755e2, 4.9445e2, 5.2095e2, 5.4425e2, 5.7225e2, 5.9675e2, 6.2085e2, 6.4865e2, 6.7435e2, 6.9925e2, 7.2575e2, 7.5145e2, 7.7715e2, 8.0335e2, 8.2945e2, 8.5495e2, 8.7835e2, 9.0555e2, 9.3155e2, 9.5785e2, 9.7215e2]),
     np.array([1.2640e11, 1.2460e11, 1.2250e11, 1.2250e11, 1.2290e11, 1.2180e11, 1.2050e11, 1.1930e11, 1.1780e11, 1.1640e11, 1.1510e11, 1.1260e11, 1.1050e11, 1.0920e11, 1.0790e11, 1.0690e11, 1.0500e11, 1.0280e11, 9.9130e10, 9.7750e10, 9.6100e10, 9.4240e10, 9.2330e10, 9.0980e10, 8.8650e10, 8.5230e10, 8.5180e10])
 ], "Pa")
 
-# Shear Modulus: ~49.6 GPa derived mechanically at ambient temperatures
 cucrzr.add_prop("shear_modulus", 49.6e9, "Pa")
 
-# Poisson's Ratio: Typical dense FCC metal / Cu alloy
 cucrzr.add_prop("poisson_ratio", 0.33, "")
 
 # -------------------------------------------------------------------------
 # B. THERMAL PROPERTIES
 # -------------------------------------------------------------------------
-
-# Thermal Conductivity: \lambda(T_K) = 387 - 0.128 * T_K (W/m-K)
 cucrzr.add_prop("thermal_conductivity", [
     np.array([3.0133e2, 3.1617e2, 3.3100e2, 3.4584e2, 3.6067e2, 3.7555e2, 3.9035e2, 4.0515e2, 4.1975e2, 4.3485e2, 4.4965e2, 4.6585e2, 4.8065e2, 4.9545e2, 5.1035e2, 5.2515e2, 5.3995e2, 5.5485e2, 5.6965e2, 5.8445e2, 5.9925e2, 6.1375e2, 6.2895e2, 6.4375e2, 6.5855e2, 6.7345e2, 6.8825e2, 7.0405e2, 7.1795e2, 7.3275e2, 7.4755e2, 7.6035e2]),
     np.array([3.5510e2, 3.5570e2, 3.5620e2, 3.5670e2, 3.5690e2, 3.5730e2, 3.5740e2, 3.5740e2, 3.5750e2, 3.5740e2, 3.5710e2, 3.5720e2, 3.5680e2, 3.5660e2, 3.5640e2, 3.5600e2, 3.5580e2, 3.5550e2, 3.5510e2, 3.5490e2, 3.5470e2, 3.5430e2, 3.5410e2, 3.5410e2, 3.5380e2, 3.5380e2, 3.5390e2, 3.5380e2, 3.5390e2, 3.5400e2, 3.5440e2, 3.5460e2])
 ], "W/m-K")
 
-# Specific Heat Capacity
 cucrzr.add_prop("specific_heat", 390.0, "J/kg-K")
 
-# Coefficient of Thermal Expansion (CTE): Average across typical operational window
 cucrzr.add_prop("cte", 17.1e-6, "1/K") 
 
-# Melting Point: Liquidus threshold
 cucrzr.add_prop("melting_point", 1353.15, "K")
 
 # -------------------------------------------------------------------------
-# C. ELECTRICAL PROPERTIES (Optional)
+# C. ELECTRICAL PROPERTIES
 # -------------------------------------------------------------------------
-
-# Electrical Resistivity: Increases linearly due to elevated phonon scattering
 cucrzr.add_prop("electrical_resistivity", [
     np.array([293.15, 373.15, 473.15, 573.15, 673.15]),
     np.array([2.30e-8, 2.75e-8, 3.30e-8, 3.81e-8, 4.47e-8])
 ], "Ohm-m")
 
 # -------------------------------------------------------------------------
-# D. METADATA (Static info - stays as single values)
+# D. METADATA 
 # -------------------------------------------------------------------------
-cucrzr.add_meta("carbon_content",      0.02) # Tracer element limit
-cucrzr.add_meta("machinability_index", 20.0) # Relative to free-machining brass
-cucrzr.add_meta("heat_treatable",      True) # Precipitation hardened
+cucrzr.add_meta("carbon_content",      0.02) 
+cucrzr.add_meta("machinability_index", 20.0) 
+cucrzr.add_meta("heat_treatable",      True)
 cucrzr.add_meta("magnetic",            False)
 cucrzr.add_meta("weldability",         "Excellent (Gas Shielded)")
 
 # -------------------------------------------------------------------------
 # E. FATIGUE DATA (S-N Curves)
-#    Structure: { Temperature_K : }
-#    HCF profile mapping continuously declining baseline for non-ferrous alloy
 # -------------------------------------------------------------------------
 cucrzr.add_fatigue({
     293.15: [ np.array([1e4, 1e5, 1e6, 1e8]), np.array([350e6, 300e6, 250e6, 200e6]) ], 
@@ -697,9 +692,10 @@ cucrzr.add_fatigue({
 _default_registry.add_material(cucrzr)
 
 # ---- GRCop-42 (PBF-LB + HIP) -----
-#Source:
-#1. https://repository.lsu.edu/mechanical_engineering_pubs/935/
-#2. https://ntrs.nasa.gov/api/citations/20190030433/downloads/20190030433.pdf
+
+# Sources:
+# 1. https://repository.lsu.edu/mechanical_engineering_pubs/935/
+# 2. https://ntrs.nasa.gov/api/citations/20190030433/downloads/20190030433.pdf
 
 grcop42 = Material(name="GRCop-42", category="Metal", default_condition="PBF-LB + HIP")
 
@@ -708,8 +704,6 @@ grcop42 = Material(name="GRCop-42", category="Metal", default_condition="PBF-LB 
 # -------------------------------------------------------------------------
 grcop42.add_prop("density", 8790.0, "kg/m^3") 
 
-# Yield and Ultimate Strength populated based on PBF-LB+HIP data [17, 21, 39]
-# Note: Drastic strength reduction is observed beyond 673.15 K (400 C)
 grcop42.add_prop("yield_strength", [
      np.array([3.0524e2, 3.2123e2, 3.7315e2, 4.2375e2, 4.7435e2, 5.2495e2, 5.7555e2, 6.2035e2, 6.6465e2, 6.8935e2, 7.2805e2, 7.6665e2, 8.2365e2, 8.6485e2, 9.0375e2, 9.4255e2, 9.7915e2, 1.0110e3, 1.0408e3, 1.0635e3]), # Temp in Kelvin (25C, 200C, 400C, 600C)
      np.array([171.8550e8, 1.9680e8, 1.8800e8, 1.8020e8, 1.7260e8, 1.6520e8, 1.5780e8, 1.5070e8, 1.4500e8, 1.3860e8, 1.3290e8, 1.2580e8, 1.1530e8, 1.0340e8, 9.1600e7, 7.9250e7, 6.7880e7, 5.6260e7, 4.4730e7, 3.5540e7])     # Value in Pa
@@ -720,71 +714,65 @@ grcop42.add_prop("ultimate_strength", [
      np.array([3.3030e8, 3.0600e8, 2.8070e8, 2.5240e8, 2.3980e8, 2.1520e8, 1.9070e8, 1.6640e8, 1.4480e8, 1.2510e8, 1.0620e8, 8.9310e7, 7.4670e7, 6.0110e7, 4.9040e7])    # Value in Pa
 ], "Pa")
 
-# Moduli degradation mapped across temperature profiles [13, 17, 40]
 grcop42.add_prop("elastic_modulus", [
      np.array([298.15, 473.15, 673.15, 873.15]), 
-     np.array([107.8e9, 95.0e9, 80.0e9, 65.0e9])       # Value in Pa
+     np.array([107.8e9, 95.0e9, 80.0e9, 65.0e9])       
 ], "Pa")
 
 grcop42.add_prop("shear_modulus", [
      np.array([298.15, 473.15, 673.15, 873.15]), 
-     np.array([41.4e9, 36.5e9, 30.7e9, 25.0e9])        # Value in Pa
+     np.array([41.4e9, 36.5e9, 30.7e9, 25.0e9])      
 ], "Pa")
 
 grcop42.add_prop("poisson_ratio", [
      np.array([298.15, 473.15, 673.15, 873.15]), 
-     np.array([0.30, 0.31, 0.32, 0.33])                # Dimensionless
+     np.array([0.30, 0.31, 0.32, 0.33])                
 ], "") 
 
 # -------------------------------------------------------------------------
 # B. THERMAL PROPERTIES
 # -------------------------------------------------------------------------
-# High-resolution array for Thermal Conductivity to capture non-linear drop 
 grcop42.add_prop("thermal_conductivity", [
      np.array([3.1438e2, 3.5335e2, 3.9235e2, 4.3125e2, 4.7025e2, 5.0925e2, 5.4825e2, 5.8715e2, 6.2615e2, 6.6515e2, 7.0415e2, 7.4305e2, 7.8205e2, 8.2105e2, 8.6005e2, 8.9895e2, 9.3795e2, 9.7695e2, 1.0159e3, 1.0548e3, 1.0762e3]), 
      np.array([3.4770e2, 3.4960e2, 3.5040e2, 3.5110e2, 3.5150e2, 3.5150e2, 3.5110e2, 3.5040e2, 3.4940e2, 3.4810e2, 3.4650e2, 3.4470e2, 3.4260e2, 3.4030e2, 3.3770e2, 3.3500e2, 3.3210e2, 3.2910e2, 3.2590e2, 3.2260e2, 3.2110e2])
 ], "W/m-K")
-
-# Specific heat capacity exhibits positive slope due to anharmonic lattice vibrations 
+ 
 grcop42.add_prop("specific_heat", [
      np.array([298.15, 473.15, 673.15, 873.15, 1073.15]), 
      np.array([380.0, 395.0, 410.0, 425.0, 440.0])
 ], "J/kg-K")
 
-# Coefficient of Thermal Expansion measured via push-rod dilatometry [5, 31]
 grcop42.add_prop("cte", [
      np.array([298.15, 473.15, 673.15, 873.15]), 
      np.array([14.2e-6, 15.1e-6, 16.5e-6, 17.8e-6])
-], "1/K") # Coeff. Thermal Expansion
+], "1/K") 
 
-grcop42.add_prop("melting_point", 1348.15, "K") # 1075 C 
+grcop42.add_prop("melting_point", 1348.15, "K") 
 
 # -------------------------------------------------------------------------
 # C. ELECTRICAL PROPERTIES 
 # -------------------------------------------------------------------------
-# Electrical resistivity derived directly via the Wiedemann-Franz law relationships 
 grcop42.add_prop("electrical_resistivity", [
      np.array([298.15, 473.15, 673.15, 873.15]), 
      np.array([2.15e-8, 3.20e-8, 4.50e-8, 6.10e-8])
 ], "Ohm-m")
 
 # -------------------------------------------------------------------------
-# D. METADATA (Static info - stays as single values)
+# D. METADATA
 # -------------------------------------------------------------------------
 grcop42.add_meta("carbon_content",      0.0) 
-grcop42.add_meta("machinability_index", 20.0) # Difficult processing due to abrasive Cr2Nb precipitates 
-grcop42.add_meta("heat_treatable",      True) # Requires Stress Relief & Hot Isostatic Pressing 
-grcop42.add_meta("magnetic",            False) # High radiopurity, non-magnetic matrix 
-grcop42.add_meta("weldability",         "Brazable / DED Bimetallic Compatible") # [11, 46]
+grcop42.add_meta("machinability_index", 20.0) 
+grcop42.add_meta("heat_treatable",      True) 
+grcop42.add_meta("magnetic",            False)
+grcop42.add_meta("weldability",         "Brazable / DED Bimetallic Compatible") 
 
 # -------------------------------------------------------------------------
 # E. FATIGUE DATA (S-N Curves)
-#    Structure: { Temperature_K : }
 # -------------------------------------------------------------------------
-# Represents estimated Low Cycle to High Cycle transitional fatigue limits [5, 42, 51]
+
 grcop42.add_fatigue({
-    298.15: [ np.array([1e3, 1e4, 1e5]), np.array([250.0e6, 200.0e6, 150.0e6]) ], # Ambient Temp
-    873.15: [ np.array([1e3, 1e4, 1e5]), np.array([110.0e6, 80.0e6, 50.0e6]) ]  # Elevated Temp (600 C)
+    298.15: [ np.array([1e3, 1e4, 1e5]), np.array([250.0e6, 200.0e6, 150.0e6]) ], 
+    873.15: [ np.array([1e3, 1e4, 1e5]), np.array([110.0e6, 80.0e6, 50.0e6]) ]  
 })
 
 # -------------------------------------------------------------------------
@@ -792,9 +780,10 @@ grcop42.add_fatigue({
 # -------------------------------------------------------------------------
 _default_registry.add_material(grcop42)
 
-# ---- GRCop-84 -----
-# Source:
-# 1.https://ntrs.nasa.gov/api/citations/20020070630/downloads/20020070630.pdf
+# --- GRCop-84 ---
+
+# Source: https://ntrs.nasa.gov/api/citations/20020070630/downloads/20020070630.pdf
+
 grcop_84 = Material(name="GRCop-84", category="Metal", default_condition="L-PBF / Extruded (Stress Relieved)")
 
 # -------------------------------------------------------------------------
@@ -848,7 +837,7 @@ grcop_84.add_prop("cte", [
 grcop_84.add_prop("melting_point", 1353.15, "K") # Solidus Temperature
 
 # -------------------------------------------------------------------------
-# C. ELECTRICAL PROPERTIES (Optional)
+# C. ELECTRICAL PROPERTIES 
 # -------------------------------------------------------------------------
 grcop_84.add_prop("electrical_resistivity", [
     np.array([3.0080e1, 3.2810e1, 3.5640e1, 3.8250e1, 4.0970e1, 4.3690e1, 4.6410e1, 4.9130e1, 5.1840e1, 5.4560e1, 5.7280e1, 5.9990e1, 6.2710e1, 6.5250e1, 6.7610e1, 7.0100e1, 7.2680e1, 7.5270e1, 7.7980e1, 8.0770e1, 8.3480e1, 8.5780e1, 8.8220e1, 9.1210e1, 9.3500e1, 9.5840e1, 9.8420e1, 1.0080e2, 1.0320e2, 1.0570e2, 1.0800e2, 1.1070e2, 1.1310e2, 1.1540e2, 1.1790e2, 1.2060e2, 1.2330e2, 1.2600e2, 1.2860e2, 1.3090e2, 1.3390e2, 1.3630e2, 1.3830e2, 1.3990e2, 1.4210e2, 1.4450e2, 1.4720e2, 1.4880e2,8.5980e1, 9.5650e1, 1.0430e2, 1.1150e2, 1.2050e2, 1.3650e2, 1.5540e2, 1.6250e2, 1.7000e2, 1.7910e2, 1.8470e2, 1.9430e2, 2.0080e2, 2.0890e2, 2.1650e2, 2.2670e2, 2.3640e2, 2.4340e2, 2.5220e2, 2.6180e2, 2.7150e2, 2.8120e2, 2.9090e2, 3.0000e2, 3.0980e2, 3.1980e2, 3.2830e2, 3.3770e2, 3.4530e2, 3.5400e2, 3.6380e2, 3.7350e2, 3.8190e2, 3.9020e2, 3.9990e2, 4.0910e2, 4.1810e2, 4.2800e2, 4.3680e2, 4.4560e2, 4.5520e2, 4.6450e2]),
@@ -856,28 +845,28 @@ grcop_84.add_prop("electrical_resistivity", [
 ], "Ohm-m")
 
 # -------------------------------------------------------------------------
-# D. METADATA (Static info - stays as single values)
+# D. METADATA
 # -------------------------------------------------------------------------
 grcop_84.add_meta("carbon_content",      0.0) 
-grcop_84.add_meta("machinability_index", 45.0) # 0-100 Scale (100 = Free-machining brass)
-grcop_84.add_meta("heat_treatable",      False) # Does not undergo precipitation aging like Al-alloys
+grcop_84.add_meta("machinability_index", 45.0) 
+grcop_84.add_meta("heat_treatable",      False) 
 grcop_84.add_meta("magnetic",            False)
 grcop_84.add_meta("weldability",         "Excellent (via Friction Stir, L-PBF, Electron Beam)")
 
 # -------------------------------------------------------------------------
 # E. FATIGUE DATA (S-N Curves)
-#    Structure: { Temperature_K : }
 # -------------------------------------------------------------------------
-# LCF data analogous approximations based on Coffin-Manson relation conversions
 grcop_84.add_fatigue({
-    293.15: [ np.array([1e3, 1e4, 1e5]), np.array([380.0e6, 310.0e6, 260.0e6]) ], # Room Temp
-    873.15: [ np.array([1e3, 1e4, 1e5]), np.array([160.0e6, 120.0e6, 95.0e6]) ]  # Elevated Temp (600 C)
+    293.15: [ np.array([1e3, 1e4, 1e5]), np.array([380.0e6, 310.0e6, 260.0e6]) ], 
+    873.15: [ np.array([1e3, 1e4, 1e5]), np.array([160.0e6, 120.0e6, 95.0e6]) ]  
 })
 
 # -------------------------------------------------------------------------
 # F. REGISTER (Save to Database)
 # -------------------------------------------------------------------------
 _default_registry.add_material(grcop_84)
+
+
 
 # =========================================================================
 # =========================================================================
@@ -886,10 +875,17 @@ _default_registry.add_material(grcop_84)
 # =========================================================================
 
 # --- 1018 Carbon Steel ---
-# Source: https://www.sciencedirect.com/science/article/pii/S2238785419302467?ref=pdf_download&fr=RR-2&rr=9c5a02781a22c92c
+
+# Source: 
+# 1. https://www.sciencedirect.com/science/article/pii/S2238785419302467?ref=pdf_download&fr=RR-2&rr=9c5a02781a22c92c
+# 2. https://www.matweb.com/search/datasheet_print.aspx?matguid=3a9cc570fbb24d119f08db22a53e2421
+# 3. https://www.makeitfrom.com/material-properties/SAE-AISI-1018-G10180-Carbon-Steel
+
 steel_1018 = Material(name="1018 Carbon Steel", category="Metal", default_condition="Standard")
 
+# -------------------------------------------------------------------------
 # A. MECHANICAL PROPERTIES
+# -------------------------------------------------------------------------
 steel_1018.add_prop("density", 7870.0, "kg/m^3") 
 
 steel_1018.add_prop("yield_strength", [
@@ -908,105 +904,107 @@ steel_1018.add_prop("elastic_modulus", [
 ], "Pa")
 
 steel_1018.add_prop("poisson_ratio", 0.29, "") 
+
+# -------------------------------------------------------------------------
 # B. THERMAL PROPERTIES
+# -------------------------------------------------------------------------
 steel_1018.add_prop("thermal_conductivity", [
-    np.array([423.150, 573.150, 773.150, 873.150]), 
-    np.array([15.100, 17.800, 21.800, 23.900])
+    np.array([273.150, 373.150, 473.150]), 
+    np.array([51.900, 50.800, 48.900])
 ], "W/m-K")
 
-steel_1018.add_prop("specific_heat", 486, "J/kg-K")
+steel_1018.add_prop("specific_heat", [
+    np.array([348.150, 448.150, 648.150]),
+    np.array([486.000, 519.000, 599.000])
+], "J/kg-K")
 
 steel_1018.add_prop("cte", [
-    np.array([366.483, 477.594, 588.706, 699.817, 810.928, 922.039, 1033.150]), 
-    np.array([1.650e5, 1.680e5, 1.700e5, 1.740e5, 1.760e5, 1.780e5, 1.860e5]) # Note: These CTE values seem unusually high (e5 instead of e-5). You may want to double-check the source decimal!
+    np.array([323.150, 473.150, 573.150]), 
+    np.array([1.200e-5, 1.350e-5, 1.450e-5]) 
 ], "1/K")
 
-steel_1018.add_prop("melting_point", 1793.15, "K")
+steel_1018.add_prop("melting_point", 1693.15, "K")
 
 
+# ==========================================
 # C. ELECTRICAL PROPERTIES 
+# ==========================================
 steel_1018.add_prop("electrical_resistivity", [
-    np.array([298.150, 813.150, 923.150, 1003.150, 1088.150]), 
-    np.array([9.100e7, 1.156e6, 1.188e6, 1.201e6, 1.224e6]) 
+    np.array([273.150, 373.150, 473.150]), 
+    np.array([1.600e-7, 2.200e-7, 2.900e-7]) 
 ], "Ohm-m")
-
 
 # -------------------------------------------------------------------------
 # D. METADATA
 # -------------------------------------------------------------------------
-steel_1018.add_meta("carbon_content",      0.18) # Percent
-steel_1018.add_meta("machinability_index", 78.0) # 0-100 Scale
+steel_1018.add_meta("carbon_content",      0.18) 
+steel_1018.add_meta("machinability_index", 78.0) 
 steel_1018.add_meta("heat_treatable",      True)
 steel_1018.add_meta("magnetic",            True)
 
+# -------------------------------------------------------------------------
+# F. REGISTER (Save to Database)
+# -------------------------------------------------------------------------
 _default_registry.add_material(steel_1018)
 
 
 # --- 1045 Carbon Steel ---
+
 # Sources:
 # 1. https://www.researchgate.net/publication/327874972_Temperature_Modeling_of_AISI_1045_Steel_during_Surface_Hardening_Processes
 # 2. https://www.forgedproduct.com/forging-materials/astm-sae-aisi-1045-carbon-steel.html
 # 3. https://www.mwcomponents.com/uploads/Resource-Center/Elgin-Material-Sheets/Carbon-Steel-Grade-1045-Fact-Sheet_Elgin-Website.pdf
+
 steel_1045 = Material(name="1045 Carbon Steel", category="Metal", default_condition="Standard")
+
 # -------------------------------------------------------------------------
 # A. MECHANICAL PROPERTIES
 # -------------------------------------------------------------------------
-# Temperature-dependent Density based on base 7870 kg/m^3 and volumetric thermal expansion, 
-# capturing the BCC-to-FCC volumetric contraction anomaly near the 873K-1073K boundary.[1, 13]
 steel_1045.add_prop("density", [
-    np.array([293.15, 373.15, 473.15, 573.15, 673.15, 773.15, 873.15, 973.15, 1073.15, 1273.15, 1473.15]), # K
-    np.array([7870.0, 7850.0, 7825.0, 7795.0, 7760.0, 7730.0, 7740.0, 7705.0, 7670.0, 7600.0, 7530.0]) # kg/m^3
+    np.array([293.15, 373.15, 473.15, 573.15, 673.15, 773.15, 873.15, 973.15, 1073.15, 1273.15, 1473.15]),
+    np.array([7870.0, 7850.0, 7825.0, 7795.0, 7760.0, 7730.0, 7740.0, 7705.0, 7670.0, 7600.0, 7530.0])
 ], "kg/m^3") 
 
-# Temperature-dependent Yield Strength capturing Dynamic Strain Aging (DSA) plateau and high-temp collapse.[8, 12, 19]
 steel_1045.add_prop("yield_strength", [
-    np.array([293.15, 373.15, 473.15, 573.15, 673.15, 773.15, 873.15, 973.15, 1073.15, 1273.15, 1473.15]), # K
-    np.array([310e6, 305e6, 290e6, 295e6, 280e6, 220e6, 150e6, 80e6, 45e6, 20e6, 10e6]) # Pa
+    np.array([293.15, 373.15, 473.15, 573.15, 673.15, 773.15, 873.15, 973.15, 1073.15, 1273.15, 1473.15]), 
+    np.array([310e6, 305e6, 290e6, 295e6, 280e6, 220e6, 150e6, 80e6, 45e6, 20e6, 10e6]) 
 ], "Pa")
 
-# User-provided digitized data from Figure 2 
 steel_1045.add_prop("elastic_modulus", [
      np.array([360.570,428.850,497.050,565.350,633.550,701.850,770.050,838.350,906.550,974.850,1036.850,1098.850,1167.150,1232.850,1304.150,1372.150,1438.150,1508.150,1577.150,1645.150,1713.150,1769.150]), 
      np.array([2.118e11,2.038e11,1.944e11,1.850e11,1.758e11,1.667e11,1.571e11,1.482e11,1.387e11,1.287e11,1.185e11,1.057e11,9.702e10,8.942e10,8.177e10,7.307e10,6.534e10,5.751e10,4.966e10,4.106e10,3.346e10,2.702e10])
 ], "Pa")
 
-# Temperature-dependent Poisson's ratio tracking compliance shifts toward viscoplasticity.[14, 29]
 steel_1045.add_prop("poisson_ratio", [
-    np.array([293.15, 473.15, 673.15, 873.15, 1073.15, 1273.15, 1473.15]), # K
-    np.array([0.270, 0.275, 0.282, 0.290, 0.310, 0.325, 0.340]) # Dimensionless
+    np.array([293.15, 473.15, 673.15, 873.15, 1073.15, 1273.15, 1473.15]), 
+    np.array([0.270, 0.275, 0.282, 0.290, 0.310, 0.325, 0.340]) 
 ], "") 
 
 # -------------------------------------------------------------------------
 # B. THERMAL PROPERTIES
 # -------------------------------------------------------------------------
-# User-provided digitized data from Figure 2 
 steel_1045.add_prop("thermal_conductivity", [
     np.array([364.830,433.250,501.550,569.950,638.350,706.750,773.850,843.450,914.150,986.450,1054.850,1123.250,1191.650,1257.950,1334.150,1397.150,1465.150,1533.150,1602.150,1670.150,1738.150,1782.150]), 
     np.array([4.442e1,4.288e1,4.116e1,3.954e1,3.798e1,3.633e1,3.476e1,3.318e1,3.152e1,2.983e1,2.814e1,2.660e1,2.493e1,2.346e1,2.175e1,2.003e1,1.853e1,1.692e1,1.542e1,1.370e1,1.208e1,1.122e1])
  ], "W/m-K")
 
-# User-provided digitized data from Figure 2 
 steel_1045.add_prop("specific_heat", [
     np.array([366.110,433.150,500.150,561.050,612.750,661.450,707.150,749.850,795.450,832.050,862.450,899.050,935.550,961.050,999.550,1008.850,1017.850,1026.950,1039.150,1051.250,1063.450,1075.650,1087.850,1114.050,1188.350,1255.350,1322.150,1389.150,1459.150,1523.150,1596.150,1663.150,1730.150,1779.150]), 
     np.array([5.213e2,5.515e2,5.863e2,6.224e2,6.556e2,6.896e2,7.195e2,7.568e2,7.944e2,8.252e2,8.554e2,8.892e2,9.260e2,9.500e2,9.913e2,9.618e2,9.309e2,8.849e2,8.294e2,7.748e2,7.209e2,6.670e2,6.123e2,5.633e2,5.706e2,5.790e2,5.864e2,5.951e2,6.034e2,6.103e2,6.212e2,6.249e2,6.351e2,6.394e2])
  ], "J/kg-K")
 
-# Temperature-dependent CTE array bridging 0°C to 700°C empirical data.
 steel_1045.add_prop("cte", [
-    np.array([373.15, 473.15, 573.15, 673.15, 773.15, 873.15, 973.15]), # K
-    np.array([11.6e-6, 12.3e-6, 13.1e-6, 13.7e-6, 14.2e-6, 14.7e-6, 15.1e-6]) # 1/K
+    np.array([373.15, 473.15, 573.15, 673.15, 773.15, 873.15, 973.15]), 
+    np.array([11.6e-6, 12.3e-6, 13.1e-6, 13.7e-6, 14.2e-6, 14.7e-6, 15.1e-6]) 
 ], "1/K") 
 
-# Table 1: Melting point is 1520 °C -> Converted to Kelvin 
 steel_1045.add_prop("melting_point", 1793.15, "K") 
 
 # -------------------------------------------------------------------------
 # D. METADATA 
 # -------------------------------------------------------------------------
-steel_1045.add_meta("carbon_content", 0.45) # 1045 steel is nominally 0.45% carbon
+steel_1045.add_meta("carbon_content", 0.45) 
 steel_1045.add_meta("magnetic", True)
-
-# Table 1: Specific heat treatment bounds 
 steel_1045.add_meta("hardening_temperature_C", 760)
 steel_1045.add_meta("tempering_temperature_C", 400)
 
@@ -1016,9 +1014,10 @@ steel_1045.add_meta("tempering_temperature_C", 400)
 _default_registry.add_material(steel_1045)
 
 # ---- 3140 Low-Alloy Steel -----
-#Source: 
-# 1.https://metalzenith.com/blogs/steel-properties/3140-steel-properties-and-key-applications-explained
-# 2.https://www.researchgate.net/publication/274695343_Assessment_of_Fatigue_Strength_in_Small-Specimen_of_AISI_3140_Steel
+# Sources: 
+# 1. https://metalzenith.com/blogs/steel-properties/3140-steel-properties-and-key-applications-explained
+# 2.shttps://www.researchgate.net/publication/274695343_Assessment_of_Fatigue_Strength_in_Small-Specimen_of_AISI_3140_Steel
+
 steel_3140 = Material(name="3140 Low-Alloy Steel", category="Metal", default_condition="Annealed")
 
 # -------------------------------------------------------------------------
@@ -1026,11 +1025,9 @@ steel_3140 = Material(name="3140 Low-Alloy Steel", category="Metal", default_con
 # -------------------------------------------------------------------------
 steel_3140.add_prop("density", 7850.0, "kg/m^3")
 
-# Yield strength drops from ~422 MPa (RT) to ~730 MPa (Quenched condition tested at 477 K)
-# Using base annealed structural RT baseline, and short-time 400F degradation ratios
 steel_3140.add_prop("yield_strength", [
-    np.array([293.15, 477.59]), # Temp in Kelvin (20C, 204C)
-    np.array([450.0e6, 730.8e6])  # Value in Pa (Using Q&T high temp data context)
+    np.array([293.15, 477.59]), 
+    np.array([450.0e6, 730.8e6])  
 ], "Pa")
 
 steel_3140.add_prop("ultimate_strength", [
@@ -1038,11 +1035,11 @@ steel_3140.add_prop("ultimate_strength", [
     np.array([735.0e6, 882.5e6]) 
 ], "Pa")
 
-steel_3140.add_prop("elastic_modulus", 200.0e9, "Pa") # ~29-30 Mpsi
+steel_3140.add_prop("elastic_modulus", 200.0e9, "Pa") 
 
-steel_3140.add_prop("shear_modulus", 79.0e9, "Pa") # Standard for medium carbon alloy steels
+steel_3140.add_prop("shear_modulus", 79.0e9, "Pa") 
 
-steel_3140.add_prop("poisson_ratio", 0.285, "") # Dimensionless
+steel_3140.add_prop("poisson_ratio", 0.285, "")
 
 # -------------------------------------------------------------------------
 # B. THERMAL PROPERTIES
@@ -1051,33 +1048,30 @@ steel_3140.add_prop("thermal_conductivity", 45.0, "W/m-K")
 
 steel_3140.add_prop("specific_heat", 460.0, "J/kg-K")
 
-# CTE values escalate with broader temperature integration bands
 steel_3140.add_prop("cte", [
-    np.array([293.15, 922.04]), # RT, 1200 F range bounds
+    np.array([293.15, 922.04]), 
     np.array([11.34e-6, 14.58e-6])
 ], "1/K") # Coeff. Thermal Expansion
 
-steel_3140.add_prop("melting_point", 1698.15, "K") # Approx 1425 C lower bound
+steel_3140.add_prop("melting_point", 1698.15, "K") 
 
 # -------------------------------------------------------------------------
-# C. ELECTRICAL PROPERTIES (Optional)
+# C. ELECTRICAL PROPERTIES
 # -------------------------------------------------------------------------
 steel_3140.add_prop("electrical_resistivity", 1.7e-6, "Ohm-m")
 
 # -------------------------------------------------------------------------
-# D. METADATA (Static info - stays as single values)
+# D. METADATA 
 # -------------------------------------------------------------------------
 steel_3140.add_meta("carbon_content",      0.40) 
-steel_3140.add_meta("machinability_index", 65.0) # 0-100 Scale (Estimated against 100 = Free-machining brass)
+steel_3140.add_meta("machinability_index", 65.0) 
 steel_3140.add_meta("heat_treatable",      True)
 steel_3140.add_meta("magnetic",            True)
 steel_3140.add_meta("weldability",         "Fair to Poor (Pre-heating required)")
 
 # -------------------------------------------------------------------------
 # E. FATIGUE DATA (S-N Curves)
-#    Structure: { Temperature_K : }
 # -------------------------------------------------------------------------
-# S-N curve approximation bounded by the 10^7 infinite life threshold
 steel_3140.add_fatigue({
     293.15: [ np.array([1e4, 1e5, 1e6, 1e7]), np.array([600.0e6, 500.0e6, 420.0e6, 380.0e6]) ] 
 })
@@ -1087,10 +1081,11 @@ steel_3140.add_fatigue({
 # -------------------------------------------------------------------------
 _default_registry.add_material(steel_3140)
 
-# ---- 4140 Steel -----
+# --- 4140 Steel ---
 # Sources:
 # 1. https://www.mwcomponents.com/uploads/Resource-Center/Elgin-Material-Sheets/Alloy-Steel-Grade-4140-Fact-Sheet_Elgin-Website.pdf
 # 2. https://www.otaisteel.com/youngs-modulus-of-4140-steel/
+
 steel_4140 = Material(name="4140 Steel", category="Metal", default_condition="Standard")
 
 # -------------------------------------------------------------------------
@@ -1099,57 +1094,55 @@ steel_4140 = Material(name="4140 Steel", category="Metal", default_condition="St
 steel_4140.add_prop("density", 7850.0, "kg/m^3")
 
 steel_4140.add_prop("yield_strength", [
-    np.array([293.15, 473.15, 673.15]), # Temp in Kelvin (20C, 200C, 400C)
-    np.array([655.0e6, 480.0e6, 350.0e6])     # Value in Pa
+    np.array([293.15, 473.15, 673.15]), 
+    np.array([655.0e6, 480.0e6, 350.0e6])     
 ], "Pa")
 steel_4140.add_prop("ultimate_strength", 1020.0e6, "Pa")
 
 steel_4140.add_prop("elastic_modulus", [
-    np.array([293.15, 473.15, 673.15, 873.15]), # Temp in Kelvin (20C, 200C, 400C, 600C)
+    np.array([293.15, 473.15, 673.15, 873.15]), 
     np.array([205.0e9, 190.0e9, 170.0e9, 140.0e9])
 ], "Pa")
 
 steel_4140.add_prop("shear_modulus", 80.0e9, "Pa")
 
-steel_4140.add_prop("poisson_ratio", 0.29, "") # Dimensionless
+steel_4140.add_prop("poisson_ratio", 0.29, "")
 # -------------------------------------------------------------------------
 # B. THERMAL PROPERTIES
 # -------------------------------------------------------------------------
 steel_4140.add_prop("thermal_conductivity", [
-    np.array([373.15, 473.15, 673.15, 873.15]), # Temp in Kelvin (100C, 200C, 400C, 600C)
+    np.array([373.15, 473.15, 673.15, 873.15]), 
     np.array([42.6, 42.2, 37.7, 33.0])
 ], "W/m-K")
 
 steel_4140.add_prop("specific_heat", [
-    np.array([293.15, 448.15, 648.15, 848.15]), # Temp in Kelvin (20C, ~175C, ~375C, ~575C midpoints)
+    np.array([293.15, 448.15, 648.15, 848.15]), 
     np.array([460.0, 473.0, 519.0, 561.0])
 ], "J/kg-K")
 
 steel_4140.add_prop("cte", [
-    np.array([373.15, 673.15, 873.15]), # Temp ranges represented by upper bounds
+    np.array([373.15, 673.15, 873.15]), 
     np.array([12.2e-6, 13.7e-6, 14.6e-6])
 ], "1/K") # Coeff. Thermal Expansion
 
 steel_4140.add_prop("melting_point", 1689.15, "K")
 
 # -------------------------------------------------------------------------
-# C. ELECTRICAL PROPERTIES (Optional)
+# C. ELECTRICAL PROPERTIES
 # -------------------------------------------------------------------------
 steel_4140.add_prop("electrical_resistivity", [
-    np.array([373.15, 473.15, 673.15, 873.15]), # Temp in Kelvin (100C, 200C, 400C, 600C)
+    np.array([373.15, 473.15, 673.15, 873.15]), 
     np.array([2.63e-7, 3.26e-7, 4.575e-7, 6.46e-7])
 ], "Ohm-m")
 
 # -------------------------------------------------------------------------
-# D. METADATA (Static info - stays as single values)
+# D. METADATA 
 # -------------------------------------------------------------------------
 steel_4140.add_meta("carbon_content",      0.40) 
-steel_4140.add_meta("machinability_index", 65.0) # 0-100 Scale (100 = Free-machining brass)
+steel_4140.add_meta("machinability_index", 65.0) 
 steel_4140.add_meta("heat_treatable",      True)
 steel_4140.add_meta("magnetic",            True)
 steel_4140.add_meta("weldability",         "Good (Pre/Post-Weld Heat Treatment Required)")
-
-
 
 # -------------------------------------------------------------------------
 # F. REGISTER (Save to Database)
@@ -1164,11 +1157,11 @@ _default_registry.add_material(steel_4140)
 # =========================================================================
 
 # ---- Stainless Steel 303 -----
+
 # Sources:
 # 1. https://www.pennstainless.com/wp-content/uploads/2018/11/PSP-108-Alloy303.pdf
 # 2. https://www.matweb.com/search/datasheet.aspx?matguid=61bd8c4763af44ab82793f78c89c9c77&ckck=1
 # 3. https://www.mdpi.com/2075-4701/12/1/89 
-
 
 ss_303 = Material(name="Stainless Steel 303", category="Metal", default_condition="Annealed")
 
@@ -1178,22 +1171,20 @@ ss_303 = Material(name="Stainless Steel 303", category="Metal", default_conditio
 ss_303.add_prop("density", 8030.0, "kg/m^3")
 
 ss_303.add_prop("yield_strength", [
-    np.array([293.15, 698.15, 813.15, 923.15, 1033.15, 1143.15]), # Temp in Kelvin (RT, 425C, 540C, 650C, 760C, 870C)
-    np.array([240e6, 240e6, 235e6, 205e6, 145e6, 70e6])           # Value in Pa
+    np.array([293.15, 698.15, 813.15, 923.15, 1033.15, 1143.15]), 
+    np.array([240e6, 240e6, 235e6, 205e6, 145e6, 70e6])           
 ], "Pa")
 
 ss_303.add_prop("ultimate_strength", [
-    np.array([293.15, 698.15, 813.15, 923.15, 1033.15, 1143.15]), # Temp in Kelvin (RT, 425C, 540C, 650C, 760C, 870C)
-    np.array([620e6, 420e6, 380e6, 310e6, 205e6, 140e6])          # Value in Pa
+    np.array([293.15, 698.15, 813.15, 923.15, 1033.15, 1143.15]), 
+    np.array([620e6, 420e6, 380e6, 310e6, 205e6, 140e6])          
 ], "Pa")
 
-# Modulus degradation based on BSSA / INCO 2980 data interpolation
 ss_303.add_prop("elastic_modulus", [
     np.array([293.15, 373.15, 473.15, 573.15, 673.15, 773.15]),
     np.array([200.0e9, 194.0e9, 186.0e9, 179.0e9, 172.0e9, 165.0e9])
 ], "Pa")
 
-# Shear Modulus degradation based on BSSA / INCO 2980 data
 ss_303.add_prop("shear_modulus", [
     np.array([297.15, 423.15, 533.15, 643.15, 753.15, 863.15]),
     np.array([78.5e9, 74.5e9, 70.6e9, 66.7e9, 63.8e9, 58.8e9])
@@ -1217,7 +1208,6 @@ ss_303.add_prop("specific_heat", [
     np.array([500.0])
 ], "J/kg-K")
 
-# Coefficient of Thermal Expansion (Mean from 20C)
 ss_303.add_prop("cte", [
     np.array([373.15, 473.15, 573.15, 673.15, 773.15]),
     np.array([16.0e-6, 16.5e-6, 17.0e-6, 17.5e-6, 18.0e-6])
@@ -1247,8 +1237,8 @@ ss_303.add_meta("weldability",         "Poor") # Limited by high sulfur content 
 # -------------------------------------------------------------------------
 ss_303.add_fatigue({
     293.15: [ 
-        np.array([11950.0, 38787.0, 50412.0, 86926.0, 219540.0, 342890.0, 1000000.0]), # Cycles 
-        np.array([320e6, 300e6, 290e6, 275e6, 270e6, 265e6, 255e6])                    # Stress Amplitude in Pa
+        np.array([11950.0, 38787.0, 50412.0, 86926.0, 219540.0, 342890.0, 1000000.0]), 
+        np.array([320e6, 300e6, 290e6, 275e6, 270e6, 265e6, 255e6])                   
     ]  
 })
 
@@ -1281,17 +1271,7 @@ ss_304.add_prop("elastic_modulus", [
     np.array([1.925e11,1.914e11,1.902e11,1.891e11,1.879e11,1.868e11,1.856e11,1.845e11,1.833e11,1.822e11,1.811e11,1.799e11,1.787e11,1.776e11,1.760e11,1.748e11,1.741e11,1.733e11,1.719e11,1.707e11,1.696e11,1.684e11,1.673e11,1.661e11,1.649e11,1.638e11,1.627e11,1.615e11,1.604e11,1.592e11,1.582e11,1.569e11,1.556e11,1.547e11,1.537e11,1.523e11,1.512e11,1.502e11])
 ], "Pa")
 
-ss_304.add_prop("shear_modulus", [
-    np.array([293.15]), 
-    np.array([0.0])
-], "Pa")
-
 ss_304.add_prop("poisson_ratio", 0.29, "") # Dimensionless
-
-ss_304.add_prop("shear_strength", [
-    np.array([293.15]), 
-    np.array([0.0])
-], "Pa")
 
 # -------------------------------------------------------------------------
 # B. THERMAL PROPERTIES
@@ -1301,7 +1281,6 @@ ss_304.add_prop("thermal_conductivity", [
     np.array([11.682,12.946,13.635,14.607,15.230,15.786,16.437,16.821,17.157,17.619,17.948,18.225,18.675,18.952,19.298,19.782,20.025,20.405,20.769,21.046,21.478,21.790,22.119,22.603,22.846,23.175,23.642,23.919,24.230,24.680,24.992,25.269,25.719,26.030,26.307,26.376])
 ], "W/m-K")
 
-# Specific Heat Capacity mapped from provided data
 ss_304.add_prop("specific_heat", [
     np.array([299.289, 319.650, 340.372, 360.483, 380.872, 401.261, 421.706, 442.094, 462.539, 482.928, 503.372, 523.761, 544.206, 564.650, 584.150, 605.928, 625.872, 646.317, 666.761, 687.206, 707.594, 728.039, 748.483, 768.928, 789.372, 809.761, 830.372, 850.372, 870.928, 891.483, 912.594, 935.372, 952.594, 973.150, 993.706, 1014.261, 1034.261, 1054.817, 1075.372, 1095.928, 1116.483, 1135.928]), 
     np.array([296.677, 323.514, 342.020, 365.215, 384.976, 404.445, 419.099, 435.846, 450.081, 463.897, 476.039, 488.600, 498.648, 502.416, 513.720, 518.326, 527.118, 534.236, 539.679, 544.703, 549.727, 554.332, 558.938, 563.125, 565.637, 570.661, 573.592, 577.360, 581.128, 585.315, 593.688, 597.038, 601.643, 605.830, 610.017, 615.041, 619.646, 624.252, 627.183, 630.532, 633.463, 635.556])
@@ -1312,15 +1291,7 @@ ss_304.add_prop("cte", [
     np.array([1.009e-5,1.036e-5,1.077e-5,1.131e-5,1.176e-5,1.244e-5,1.288e-5,1.338e-5,1.384e-5,1.429e-5,1.458e-5,1.491e-5,1.520e-5,1.547e-5,1.572e-5,1.599e-5,1.619e-5,1.631e-5,1.654e-5,1.673e-5,1.691e-5,1.706e-5,1.722e-5,1.738e-5,1.754e-5,1.768e-5,1.784e-5,1.799e-5,1.807e-5,1.813e-5,1.829e-5,1.841e-5,1.852e-5,1.863e-5,1.872e-5,1.881e-5,1.890e-5,1.899e-5,1.910e-5,1.917e-5,1.926e-5,1.937e-5,1.944e-5,1.955e-5,1.971e-5,1.978e-5,1.982e-5,1.985e-5,1.987e-5])
 ], "1/K") 
 
-ss_304.add_prop("melting_point", 1673.0, "K") # Solidus temp (starts melting approx 1400°C)
-
-# -------------------------------------------------------------------------
-# C. ELECTRICAL PROPERTIES 
-# -------------------------------------------------------------------------
-ss_304.add_prop("electrical_resistivity", [
-    np.array([293.15]), 
-    np.array([0.0])
-], "Ohm-m")
+ss_304.add_prop("melting_point", 1673.0, "K") 
 
 # -------------------------------------------------------------------------
 # D. METADATA 
@@ -1336,9 +1307,11 @@ ss_304.add_meta("magnetic",            False) # Austenitic structure is non-magn
 _default_registry.add_material(ss_304)
 
 # ---- Stainless Steel 316 -----
-#Source: 
-#1.https://ntrs.nasa.gov/api/citations/19650024830/downloads/19650024830.pdf
-#2.https://bssa.org.uk/bssa_articles/elevated-temperature-physical-properties-of-stainless-steels/
+
+#Sources: 
+# 1. https://ntrs.nasa.gov/api/citations/19650024830/downloads/19650024830.pdf
+# 2. https://bssa.org.uk/bssa_articles/elevated-temperature-physical-properties-of-stainless-steels/
+
 ss_316 = Material(name="Stainless Steel 316", category="Metal", default_condition="Annealed")
 
 # -------------------------------------------------------------------------
@@ -1350,8 +1323,8 @@ ss_316.add_prop("density", [
 ], "kg/m^3")
 
 ss_316.add_prop("yield_strength", [
-    np.array([293.15, 373.15, 573.15, 773.15, 873.15, 973.15, 1073.15]), # Temp in Kelvin
-    np.array([205e6, 235e6, 165e6, 145e6, 140e6, 130e6, 115e6])      # Value in Pa
+    np.array([293.15, 373.15, 573.15, 773.15, 873.15, 973.15, 1073.15]), 
+    np.array([205e6, 235e6, 165e6, 145e6, 140e6, 130e6, 115e6])      
 ], "Pa")
 
 ss_316.add_prop("ultimate_strength", [
@@ -1391,10 +1364,10 @@ ss_316.add_prop("cte", [
     np.array([16.0e-6, 16.5e-6, 17.0e-6, 17.5e-6, 18.0e-6])
 ], "1/K")# Coeff. Thermal Expansion
 
-ss_316.add_prop("melting_point", 1643.15, "K") # Solidus transition boundary
+ss_316.add_prop("melting_point", 1643.15, "K") 
 
 # -------------------------------------------------------------------------
-# C. ELECTRICAL PROPERTIES (Optional)
+# C. ELECTRICAL PROPERTIES 
 # -------------------------------------------------------------------------
 ss_316.add_prop("electrical_resistivity", [
     np.array([2.6093e2, 2.7221e2, 2.8298e2, 2.9031e2, 3.0317e2, 3.1798e2, 3.3243e2, 3.4743e2, 3.5643e2, 3.6571e2, 3.7726e2, 3.9187e2, 4.0576e2, 4.1937e2, 4.3526e2, 4.4793e2, 4.6148e2, 4.7504e2, 4.8865e2, 5.0365e2, 5.1859e2, 5.2876e2, 5.3698e2, 5.4476e2, 5.6215e2, 5.7309e2, 5.8409e2, 6.0621e2, 6.1565e2, 6.2826e2, 6.3898e2, 6.5176e2, 6.6654e2, 6.8171e2, 6.9665e2, 7.1159e2, 7.2665e2, 7.4159e2, 7.5659e2, 7.7159e2, 7.8743e2, 8.0154e2, 8.1648e2, 8.3148e2, 8.4648e2, 8.6148e2, 8.7648e2, 8.9148e2, 9.0759e2, 9.2148e2, 9.3648e2, 9.5148e2, 9.6648e2, 9.8148e2, 9.9648e2, 1.0115e3, 1.0265e3, 1.0415e3, 1.0565e3, 1.0715e3, 1.0865e3, 1.1048e3, 1.1259e3, 1.1376e3, 1.1576e3, 1.1826e3, 1.1954e3, 1.2132e3, 1.2287e3, 1.2398e3]), 
@@ -1404,18 +1377,17 @@ ss_316.add_prop("electrical_resistivity", [
 # -------------------------------------------------------------------------
 # D. METADATA (Static info - stays as single values)
 # -------------------------------------------------------------------------
-ss_316.add_meta("carbon_content",      0.08) # Base alloy maximum, 0.03 for 316L
-ss_316.add_meta("machinability_index", 40.0) # Evaluated relative to B1212
+ss_316.add_meta("carbon_content",      0.08) 
+ss_316.add_meta("machinability_index", 40.0)
 ss_316.add_meta("heat_treatable",      False) # Hardening achieved solely via cold work
-ss_316.add_meta("magnetic",            False) # Fully Paramagnetic (Mu = 1.008)
-ss_316.add_meta("weldability",         "Excellent") # Subject to stringent sensitization kinetics
+ss_316.add_meta("magnetic",            False) 
+ss_316.add_meta("weldability",         "Excellent") 
 
 # -------------------------------------------------------------------------
 # E. FATIGUE DATA (S-N Curves)
-#    Structure: { Temperature_K : }
 # -------------------------------------------------------------------------
 ss_316.add_fatigue({
-    293.15: [ np.array([1e4, 1e5, 1e6, 1e8]), np.array([310e6, 256e6, 215e6, 93e6]) ] # Limits derived from HCF and Jaske-O'Donnell criteria
+    293.15: [ np.array([1e4, 1e5, 1e6, 1e8]), np.array([310e6, 256e6, 215e6, 93e6]) ] 
 })
 
 # -------------------------------------------------------------------------
@@ -1423,102 +1395,77 @@ ss_316.add_fatigue({
 # -------------------------------------------------------------------------
 _default_registry.add_material(ss_316)
 
-# ---- SS 17-4 PH -----
+# --- SS 17-4 PH ---
 
-# Source:
+# Sources:
 # 1.https://www.aksteel.nl/files/downloads/clf_datasheet_armco_17-4_ph_pdb_euro_102022_89.pdf
 # 2.https://www.upmet.com/sites/default/files/products/datasheet/17-4-ph-datasheet.pdf
 # 3.https://www.carpentertechnology.com/hubfs/7407324/Material%20Saftey%20Data%20Sheets/Custom%20630%20(17-4%20PH).pdf
+
 ss_17_4ph = Material(name="SS 17-4 PH", category="Superalloy", default_condition="H900")
 
 # -------------------------------------------------------------------------
 # A. MECHANICAL PROPERTIES
 # -------------------------------------------------------------------------
 
-# Density: 0.282 lb/in^3 -> ~7805 kg/m^3 (Rounded to 7800 for standard)
 ss_17_4ph.add_prop("density", 7800.0, "kg/m^3")
-
-# Yield Strength (0.2% Offset) - Derived from Carpenter Custom 630 
+ 
 ss_17_4ph.add_prop("yield_strength", [
     np.array([77.59, 210.93, 233.15, 273.15, 297.04, 588.71, 699.82, 755.37, 810.93]), # Temp in K
     np.array([1675e6, 1351e6, 1303e6, 1262e6, 1262e6, 1000e6, 910e6, 814e6, 643e6])    # Value in Pa
 ], "Pa")
 
-# Ultimate Tensile Strength - Derived from Carpenter Custom 630 
 ss_17_4ph.add_prop("ultimate_strength", [
     np.array([77.59, 210.93, 233.15, 273.15, 297.04, 588.71, 699.82, 755.37, 810.93]), # Temp in K
     np.array([1710e6, 1441e6, 1440e6, 1331e6, 1365e6, 1186e6, 1103e6, 952e6, 793e6])     # Value in Pa
 ], "Pa")
 
-# Elastic Modulus - Baseline 197 GPa at RT , Degraded by % from AK Steel 
 ss_17_4ph.add_prop("elastic_modulus", [
     np.array([295.37, 309.82, 366.48, 422.04, 477.59, 533.15, 588.71]), # Temp in K
     np.array([197.0e9, 196.2e9, 192.6e9, 189.7e9, 186.5e9, 183.2e9, 180.0e9]) # Value in Pa
 ], "Pa")
 
-# Shear Modulus - H900 baseline 
-ss_17_4ph.add_prop("shear_modulus", [
-    np.array([297.04]),
-    np.array([77.0e9]) 
-], "Pa")
+ss_17_4ph.add_prop("shear_modulus", 77.0e9 , "Pa")
 
-# Poisson's Ratio - Standard across hardened conditions 
-ss_17_4ph.add_prop("poisson_ratio", [
-    np.array([297.04]),
-    np.array([0.291])
-], "") # Dimensionless
+ss_17_4ph.add_prop("poisson_ratio", 0.291, "") # Dimensionless
 
 # -------------------------------------------------------------------------
 # B. THERMAL PROPERTIES
 # -------------------------------------------------------------------------
-
-# Thermal Conductivity - Condition H900 (Increases with Temp) 
 ss_17_4ph.add_prop("thermal_conductivity", [
-    np.array([422.04, 533.15, 733.15, 755.37]), # Temp in K
-    np.array([17.9, 19.5, 22.5, 22.6])          # Value in W/m-K
+    np.array([422.04, 533.15, 733.15, 755.37]), 
+    np.array([17.9, 19.5, 22.5, 22.6])          
 ], "W/m-K")
 
-# Specific Heat Capacity - Baseline 
-ss_17_4ph.add_prop("specific_heat", [
-    np.array([293.15]),
-    np.array([460.0])
-], "J/kg-K")
-
-# Coefficient of Thermal Expansion (CTE) - Mean from RT to 800F 
+ss_17_4ph.add_prop("specific_heat", 460.0, "J/kg-K")
+ 
 ss_17_4ph.add_prop("cte", [
-    np.array([293.15, 477.59, 588.71, 699.82]), # Temp in K
-    np.array([10.8e-6, 10.8e-6, 11.2e-6, 11.2e-6]) # Value in 1/K
+    np.array([293.15, 477.59, 588.71, 699.82]), 
+    np.array([10.8e-6, 10.8e-6, 11.2e-6, 11.2e-6]) 
 ], "1/K") 
 
-# Melting Point - Range 1404C to 1440C, using lower bound 
 ss_17_4ph.add_prop("melting_point", 1677.15, "K")
 
 # -------------------------------------------------------------------------
 # C. ELECTRICAL PROPERTIES 
 # -------------------------------------------------------------------------
-
-# Electrical Resistivity - Condition H900 RT 
-ss_17_4ph.add_prop("electrical_resistivity", [
-    np.array([294.26]),
-    np.array([770e-9]) # 77 microhm-cm -> 770e-9 Ohm-m
-], "Ohm-m")
+ss_17_4ph.add_prop("electrical_resistivity", 770e-9, "Ohm-m")
 
 # -------------------------------------------------------------------------
 # D. METADATA 
 # -------------------------------------------------------------------------
-ss_17_4ph.add_meta("carbon_content",      0.07) # Maximum allowed % 
-ss_17_4ph.add_meta("machinability_index", 48.0) # For Cond A. (Up to 76.0 in H1150-M) 
+ss_17_4ph.add_meta("carbon_content",      0.07) 
+ss_17_4ph.add_meta("machinability_index", 48.0) 
 ss_17_4ph.add_meta("heat_treatable",      True) 
-ss_17_4ph.add_meta("magnetic",            True) # Strongly ferromagnetic 
-ss_17_4ph.add_meta("weldability",         "Excellent") # Highly weldable due to low carbon 
+ss_17_4ph.add_meta("magnetic",            True) 
+ss_17_4ph.add_meta("weldability",         "Excellent") 
 
 # -------------------------------------------------------------------------
 # E. FATIGUE DATA (S-N Curves)
-#    Condition H900 rotating beam fatigue data 
 # -------------------------------------------------------------------------
 ss_17_4ph.add_fatigue({
-    297.04: [ np.array([1e7, 1e8]), np.array([621e6, 503e6]) ], # Room Temp (24 C)
-    588.71: [ np.array([1e7, 1e8]), np.array([531e6, 427e6]) ]  # Elevated Temp (316 C)
+    297.04: [ np.array([1e7, 1e8]), np.array([621e6, 503e6]) ], 
+    588.71: [ np.array([1e7, 1e8]), np.array([531e6, 427e6]) ]  
 })
 
 # -------------------------------------------------------------------------
@@ -1527,12 +1474,18 @@ ss_17_4ph.add_fatigue({
 _default_registry.add_material(ss_17_4ph)
 
 # --- A286 Steel ---
-#Source:https://www.upmet.com/sites/default/files/datasheets/a286.pdf\
-#Source:https://www.carpentertechnology.com/hubfs/7407324/Material%20Saftey%20Data%20Sheets/A-286.pdf 
+
+# Sources:
+# 1. https://www.upmet.com/sites/default/files/datasheets/a286.pdf
+# 2. https://www.carpentertechnology.com/hubfs/7407324/Material%20Saftey%20Data%20Sheets/A-286.pdf 
+
 a286steel = Material(name="A286 Steel", category="General", default_condition="Standard")
 
+# -------------------------------------------------------------------------
 # A. MECHANICAL PROPERTIES
-a286steel.add_prop("density", 7920,"kg/m^3")
+# -------------------------------------------------------------------------
+a286steel.add_prop("density", 7920.0, "kg/m^3")
+
 a286steel.add_prop("yield_strength", [
     np.array([294.250,477.150,700.150,811.150,866.150,922.150,977.150,1033.150,1089.150]), 
     np.array([6.550e8,6.450e8,6.410e8,6.030e8,6.210e8,6.070e8,5.930e8,4.270e8,2.280e8])
@@ -1550,36 +1503,42 @@ a286steel.add_prop("elastic_modulus", [
 
 a286steel.add_prop("poisson_ratio", 0.3, "") 
 
+# -------------------------------------------------------------------------
 # B. THERMAL PROPERTIES
-
+# -------------------------------------------------------------------------
 a286steel.add_prop("thermal_conductivity", [
     np.array([423.150,573.150,773.150,873.150]), 
     np.array([15.100,17.800,21.800,23.900])
 ], "W/m-K")
 
-a286steel.add_prop("specific_heat", 420, "J/kg-K")
+a286steel.add_prop("specific_heat", 420.0, "J/kg-K")
 
 a286steel.add_prop("cte", [
-    np.array([366.483,477.594,588.706,699.817,810.928,922.039,1033.150]), 
-    np.array([1.650e5,1.680e5,1.700e5,1.740e5,1.760e5,1.780e5,1.860e5])
+    np.array([3.6615e2, 4.7715e2, 5.8915e2, 7.0015e2, 8.1115e2, 9.2215e2, 9.7715e2, 1.0332e3]), 
+    np.array([1.6500e-5, 1.6800e-5, 1.7000e-5, 1.7400e-5, 1.7600e-5, 1.7800e-5, 1.7900e-5, 1.8600e-5])
 ], "1/K") # Coeff. Thermal Expansion
 
-# Melting point is usually a single limit, but formatted as array if requested
 a286steel.add_prop("melting_point", 1560.0, "K")
 
-
+# -------------------------------------------------------------------------
 # C. ELECTRICAL PROPERTIES 
-
+# -------------------------------------------------------------------------
 a286steel.add_prop("electrical_resistivity", [
     np.array([298.150,813.150,923.150,1003.150,1088.150]), 
-    np.array([9.100e7,1.156e6,1.188e6,1.201e6,1.224e6])
+    np.array([9.1000e-7, 1.1560e-6, 1.1880e-6, 1.2010e-6, 1.2240e-6])
 ], "Ohm-m")
 
+# -------------------------------------------------------------------------
+# D. METADATA 
+# -------------------------------------------------------------------------
+a286steel.add_meta("carbon_content",      0.08) 
+a286steel.add_meta("machinability_index", 20.0) 
+a286steel.add_meta("heat_treatable",      True) 
+a286steel.add_meta("magnetic",            False) 
 
-a286steel.add_meta("carbon_content",      0.08) # Typical max is 0.08%
-a286steel.add_meta("machinability_index", 20.0) # Very difficult to machine (20-30% of standard brass)
-a286steel.add_meta("heat_treatable",      True) # Precipitation hardening alloy
-a286steel.add_meta("magnetic",            False) # Remains non-magnetic even after cold working
+# -------------------------------------------------------------------------
+# F. REGISTER (Save to Database)
+# -------------------------------------------------------------------------
 _default_registry.add_material(a286steel)
 
 
@@ -1590,9 +1549,14 @@ _default_registry.add_material(a286steel)
 # =========================================================================
 
 # --- Inconel 625 ---
-# https://www.specialmetals.com/documents/technical-bulletins/inconel/inconel-alloy-625.pdf
+
+# Source: https://www.specialmetals.com/documents/technical-bulletins/inconel/inconel-alloy-625.pdf
+
 inc625 = Material(name="Inconel 625", category="Superalloy", default_condition="Annealed")
 
+# -------------------------------------------------------------------------
+# A. MECHANICAL PROPERTIES
+# -------------------------------------------------------------------------
 inc625.add_prop("yield_strength", [
     np.array([353.124,390.814,427.395,463.976,500.557,535.476,577.045,613.626,650.207,686.789,723.370,759.951,796.532,833.113,869.694,906.275,942.857,979.438,1016.351,1052.600,1107.472,1129.088,1152.367,1178.971,1212.227,1248.808,1285.389,1321.970,1356.556,1075.789,327.074]), 
     np.array([4.771e8,4.619e8,4.516e8,4.436e8,4.365e8,4.316e8,4.269e8,4.241e8,4.211e8,4.191e8,4.172e8,4.157e8,4.151e8,4.151e8,4.159e8,4.191e8,4.271e8,4.316e8,4.283e8,4.093e8,3.657e8,3.178e8,2.729e8,2.254e8,1.770e8,1.394e8,1.112e8,9.040e7,7.850e7,4.004e8,4.902e8]) 
@@ -1645,6 +1609,9 @@ inc625.add_prop("poisson_ratio", [
     np.array([0.312,0.311,0.303,0.3,0.302,0.312,0.314,0.305,0.289])
 ], "", condition="Solution Treated")
 
+# -------------------------------------------------------------------------
+# B. THERMAL PROPERTIES
+# -------------------------------------------------------------------------
 inc625.add_prop("thermal_conductivity", [
     np.array([116.15,144.15,200.15,255.15,294.15,311.15,366.15,477.15,589.15,700.15,811.15,922.15,1033.15,1144.15,1255.15]), 
     np.array([7.2,7.5,8.4,9.2,9.8,10.1,10.8,12.5,14.1,15.7,17.5,19.0,20.8,22.8,25.2]) 
@@ -1656,22 +1623,30 @@ inc625.add_prop("specific_heat", [
 ], "J/kg-K")
 
 inc625.add_prop("cte", [
-    np.array([50.439,56.238,61.590,66.943,72.296,76.756,80.325,83.893,87.908,92.368,96.829,100.843,104.858,109.318,114.225,119.577,125.822,132.513,139.204,146.787,154.816,163.291,172.658,182.471,193.176,202.989,212.802,222.616,232.429,242.242,252.055,261.958,271.979,282.189,290.862,47.093,42.047]),
-    np.array([10.706e8,1.124e8,1.523e8,1.916e8,2.320e8,2.728e8,3.094e8,3.464e8,3.901e8,4.369e8,4.851e8,5.277e8,5.707e8,6.167e8,6.620e8,7.031e8,7.451e8,7.867e8,8.250e8,8.653e8,9.044e8,9.429e8,9.813e8,10.154e8,10.482e8,10.764e8,11.022e8,11.269e8,11.494e8,11.707e8,11.922e8,12.131e8,12.323e8,12.507e8,12.640e8,0.409e8,0.099e8]) 
+    np.array([2.4761e1, 3.2872e1, 4.0372e1, 4.7317e1, 5.3706e1, 5.9483e1, 6.5261e1, 7.0483e1, 7.5094e1, 7.9761e1, 8.4372e1, 8.8983e1, 9.4206e1, 1.0059e2, 1.0809e2, 1.1621e2, 1.2487e2, 1.3476e2, 1.4576e2, 1.5787e2, 1.7065e2, 1.8337e2, 1.9609e2, 2.0837e2, 2.2157e2, 2.3387e2, 2.4704e2, 2.5989e2, 2.7264e2, 2.8525e2, 2.9277e2]),
+    np.array([4.2180e-7, 9.7740e-7, 1.4820e-6, 1.9660e-6, 2.4130e-6, 2.9140e-6, 3.4890e-6, 3.9850e-6, 4.4510e-6, 4.9020e-6, 5.3790e-6, 5.8350e-6, 6.3360e-6, 6.8350e-6, 7.3320e-6, 7.8120e-6, 8.2770e-6, 8.7600e-6, 9.2520e-6, 9.7330e-6, 1.0170e-5, 1.0540e-5, 1.0870e-5, 1.1170e-5, 1.1470e-5, 1.1720e-5, 1.2000e-5, 1.2250e-5, 1.2470e-5, 1.2670e-5, 1.2770e-5]) 
 ], "1/K")
 
 inc625.add_prop("melting_point", 1560.0, "K")
 
+# -------------------------------------------------------------------------
+# C. ELECTRICAL PROPERTIES 
+# -------------------------------------------------------------------------
 inc625.add_prop("electrical_resistivity", [
     np.array([294.15,311.15,366.15,477.15,589.15,700.15,811.15,922.15,1033.15,1144.15,1255.15]),
     np.array([1.29e-6, 1.29e-6, 1.29e-6, 1.29e-6, 1.29e-6, 1.29e-6, 1.29e-6, 1.29e-6, 1.29e-6, 1.29e-6, 1.29e-6]) 
 ], "Ohm-m")
 
+# -------------------------------------------------------------------------
+# D. METADATA (Static info - stays as single values)
+# -------------------------------------------------------------------------
 inc625.add_meta("weldability", "Excellent")
 inc625.add_meta("machinability_index", 20) 
 inc625.add_meta("magnetic", False)
 
-# 5. Fatigue Curve
+# -------------------------------------------------------------------------
+# E. FATIGUE DATA (S-N Curves)
+# -------------------------------------------------------------------------
 inc625.add_fatigue({
      300: [np.array([3.824e7,3.982e7,4.140e7,4.298e7,4.456e7,4.614e7,4.772e7,4.941e7,5.088e7,5.246e7,5.404e7,5.561e7,5.720e7,5.878e7,6.036e7,6.194e7,6.352e7,6.510e7,6.668e7,6.827e7,6.984e7,7.142e7,7.300e7,7.458e7,7.616e7,7.774e7,7.932e7,8.081e7,8.248e7,8.406e7,8.564e7,8.722e7,8.880e7,9.038e7,9.196e7,9.354e7,9.512e7,9.670e7,9.828e7,9.965e7]),
            np.array([6.870e8,6.850e8,6.848e8,6.845e8,6.805e8,6.732e8,6.708e8,6.685e8,6.668e8,6.650e8,6.629e8,6.608e8,6.595e8,6.578e8,6.563e8,6.520e8,6.510e8,6.512e8,6.498e8,6.488e8,6.473e8,6.458e8,6.445e8,6.434e8,6.423e8,6.403e8,6.401e8,6.378e8,6.376e8,6.380e8,6.372e8,6.364e8,6.363e8,6.351e8,6.355e8,6.354e8,6.347e8,6.353e8,6.353e8,6.322e8]) ], 
@@ -1701,15 +1676,20 @@ inc625.add_fatigue({
                 np.array([2.616e8,2.514e8,2.415e8,2.328e8,2.237e8,2.146e8,2.072e8,2.027e8,1.895e8,1.829e8,1.785e8,1.950e8]) ] 
  }, condition="Solution Treated")
 
+# -------------------------------------------------------------------------
+# F. REGISTER (Save to Database)
+# -------------------------------------------------------------------------
 _default_registry.add_material(inc625)
 
 # --- Inconel 718 ---
+
 # Source: https://www.specialmetals.com/documents/technical-bulletins/inconel/inconel-alloy-718.pdf
+
 inc718 = Material(name="Inconel 718",  category="Superalloy",default_condition="Annealed")
 
-
-# 1. Mechanical
-
+# -------------------------------------------------------------------------
+# A. MECHANICAL PROPERTIES
+# -------------------------------------------------------------------------
 inc718.add_prop("yield_strength", [
     np.array([62.169,101.974,141.78,162.741,196.057,235.875,276.012,315.543,355.386,396.43,435.072,474.897,514.745,553.773,594.478,634.349,674.219,714.073,753.913,793.73,832.919,873.309,915.091,941.212,958.898,975.179,984.743,995.429,1006.113,1016.793,1032.165,1047.129,1065.921,1092.845,1127.883,1165.734,1203.626,1243.078,1283.144,1322.945,1356.881]), # Temp (K)
     np.array([1.202e9,1.185e9,1.168e9,1.152e9,1.144e9,1.130e9,1.120e9,1.110e9,1.103e9,1.094e9,1.088e9,1.076e9,1.070e9,1.068e9,1.068e9,1.068e9,1.068e9,1.064e9,1.055e9,1.041e9,1.021e9,9.982e8,9.645e8,9.178e8,8.676e8,8.119e8,7.534e8,7.040e8,6.538e8,6.028e8,5.392e8,4.783e8,4.156e8,3.311e8,2.676e8,2.128e8,1.691e8,1.381e8,1.101e8,9.170e7,7.970e7]) # Pa
@@ -1735,29 +1715,30 @@ inc718.add_prop("poisson_ratio", [
     np.array([0.25,0.30,0.294,0.291,0.288,0.28,0.28,0.275,0.272,0.273,0.271,0.272,0.271,0.276,0.283,0.292,0.306,0.321,0.331,0.334,0.341,0.366,0.402])
 ], "")
 
-
-# 2. Thermal
-
+# -------------------------------------------------------------------------
+# B. THERMAL PROPERTIES
+# -------------------------------------------------------------------------
 inc718.add_prop("thermal_conductivity", [
-    np.array([294.26,366.48,477.59,588.71,699.82,810.93,922.04,1033.15,1144.26,1255.37,1366.48]), # Temp (K)
-    np.array([11.1,12.4,14.1,16.0,17.7,19.5,21.2,23.1,25.0,26.7,28.3]) # W/m-K 
+    np.array([294.26,366.48,477.59,588.71,699.82,810.93,922.04,1033.15,1144.26,1255.37,1366.48]), 
+    np.array([11.1,12.4,14.1,16.0,17.7,19.5,21.2,23.1,25.0,26.7,28.3]) 
 ], "W/m-K")
 inc718.add_prop("thermal_conductivity", [
-    np.array([294.26,366.48,477.59,588.71,699.82,810.93,922.04,1033.15,1144.26,1255.37,1366.48]), # Temp (K)
-    np.array([11.4,12.5,14.4,16.2,17.9,19.6,21.3,23.2,25.0,26.8,28.7]) # W/m-K 
+    np.array([294.26,366.48,477.59,588.71,699.82,810.93,922.04,1033.15,1144.26,1255.37,1366.48]), 
+    np.array([11.4,12.5,14.4,16.2,17.9,19.6,21.3,23.2,25.0,26.8,28.7]) 
 ], "W/m-K","Aged")
 
 inc718.add_prop("specific_heat", 435, "J/kg-K")
 
 inc718.add_prop("cte", [
     np.array([77.5944,366.48,477.59,588.71,699.82,810.93,922.04,1033.15]),
-    np.array([1.062e-05,1.316e-05,1.355e-05,1.393e-05,1.435e-05,1.456e-05,1.510e-05,1.604e-05,]) # 1/K
+    np.array([1.062e-05,1.316e-05,1.355e-05,1.393e-05,1.435e-05,1.456e-05,1.510e-05,1.604e-05,]) 
 ], "1/K")
 
-inc718.add_prop("melting_point", 1533.0, "K") # Approx 1260 C (Solidus)
+inc718.add_prop("melting_point", 1533.0, "K") 
 
-# 3. Electrical
-
+# -------------------------------------------------------------------------
+# C. ELECTRICAL PROPERTIES 
+# -------------------------------------------------------------------------
 inc718.add_prop("electrical_resistivity", [
     np.array([294.26,366.48,477.59,588.71,699.82,810.93,922.04,1033.15,1144.26,1255.37,1366.48]),
     np.array([1.25e-06,1.27e-06,1.28e-06,1.29e-06,1.30e-06,1.33e-06,1.34e-06,1.33e-06,1.33e-06,1.33e-06,1.35e-06]) # J/kg-K
@@ -1768,19 +1749,23 @@ inc718.add_prop("electrical_resistivity", [
     np.array([1.21e-06,1.22e-06,1.26e-06,1.28e-06,1.29e-06,1.31e-06,1.32e-06,1.32e-06,1.32e-06,1.33e-06,1.32e-06]) # J/kg-K
 ], "Ohm-m","Aged")
 
-# 4. Metadata
-
+# -------------------------------------------------------------------------
+# D. METADATA 
+# -------------------------------------------------------------------------
 inc718.add_meta("weldability", "Good (Resistant to strain-age cracking)")
 inc718.add_meta("machinability_index", 12) # EXTREMELY DIFFICULT
 
-#5 Fatigue Curve
-
+# -------------------------------------------------------------------------
+# E. FATIGUE DATA (S-N Curves)
+# -------------------------------------------------------------------------
 inc625.add_fatigue({
      293.15: [np.array([2.161e8,2.363e8,2.504e8,2.745e8,2.935e8,3.150e8,3.378e8,3.619e8,3.859e8,4.100e8,4.365e8,4.627e8,4.924e8,5.212e8,5.474e8,5.750e8,6.027e8,6.303e8,6.579e8,6.875e8,7.207e8,7.482e8,7.650e8,7.884e8,8.159e8,8.435e8,8.711e8,8.986e8,9.262e8,9.537e8,9.813e8,9.976e8,7.017e8]),
            np.array([7.648e8,7.295e8,6.922e8,6.477e8,6.096e8,5.730e8,5.366e8,4.994e8,4.616e8,4.231e8,3.892e8,3.586e8,3.283e8,3.091e8,2.785e8,2.580e8,2.403e8,2.246e8,2.109e8,1.936e8,1.820e8,1.731e8,1.628e8,1.591e8,1.535e8,1.436e8,1.368e8,1.311e8,1.253e8,1.197e8,1.145e8,1.113e8,1.891e8]) ], 
     })
 
-# Register to database
+# -------------------------------------------------------------------------
+# F. REGISTER (Save to Database)
+# -------------------------------------------------------------------------
 _default_registry.add_material(inc718)
 
 
@@ -1802,39 +1787,39 @@ graphite = Material(name="Graphite", category="Ceramic", default_condition="Isom
 # -------------------------------------------------------------------------
 # A. MECHANICAL PROPERTIES
 # -------------------------------------------------------------------------
-graphite.add_prop("density", 1850.0, "kg/m^3") # Average bulk density accounting for inherent porosity
+graphite.add_prop("density", 1850.0, "kg/m^3")
 
 graphite.add_prop("yield_strength", [
-    np.array([293.15, 1273.15, 2773.15]), # Temp in Kelvin
-    np.array([30.0e6, 45.0e6, 60.0e6])    # Value in Pa (Yield ~ UTS in brittle materials, increases with Temp)
+    np.array([293.15, 1273.15, 2773.15]),
+    np.array([30.0e6, 45.0e6, 60.0e6])    
 ], "Pa")
 
 graphite.add_prop("ultimate_strength", [
     np.array([293.15, 1273.15, 2773.15]),
-    np.array([30.0e6, 45.0e6, 60.0e6])    # UTS increases by 80-100% up to 2500C due to crack closure
+    np.array([30.0e6, 45.0e6, 60.0e6])    
 ], "Pa")
 
 graphite.add_prop("elastic_modulus", [
     np.array([293.15, 1273.15, 1773.15, 2273.15]),
-    np.array([10.5e9, 11.5e9, 12.0e9, 11.0e9]) # Dynamic modulus increases, peaks between 1500C-1700C, then drops
+    np.array([10.5e9, 11.5e9, 12.0e9, 11.0e9]) 
 ], "Pa")
 
 graphite.add_prop("shear_modulus", [
     np.array([293.15, 1273.15, 1773.15, 2273.15]),
-    np.array([4.5e9, 5.0e9, 5.3e9, 4.8e9]) # Follows the exact trend of the elastic modulus
+    np.array([4.5e9, 5.0e9, 5.3e9, 4.8e9]) 
 ], "Pa")
 
 graphite.add_prop("poisson_ratio", [
     np.array([293.15, 1273.15, 2273.15]),
-    np.array([0.22, 0.25, 0.30]) # Tends to increase towards 0.5 limit with high-temp plasticity
-], "") # Dimensionless
+    np.array([0.22, 0.25, 0.30]) 
+], "") 
 
 # -------------------------------------------------------------------------
 # B. THERMAL PROPERTIES
 # -------------------------------------------------------------------------
 graphite.add_prop("thermal_conductivity", [
     np.array([293.15, 773.15, 1273.15]),
-    np.array([120.0, 70.0, 45.0]) # Phonon Umklapp scattering drops conductivity roughly as 1/T
+    np.array([120.0, 70.0, 45.0]) 
 ], "W/m-K")
 
 graphite.add_prop("specific_heat", [
@@ -1844,21 +1829,21 @@ graphite.add_prop("specific_heat", [
 
 graphite.add_prop("cte", [
     np.array([293.15, 1273.15, 2273.15]),
-    np.array([2.0e-6, 4.5e-6, 6.0e-6]) # Buffered initially by microcracks, rises slowly at extremes
+    np.array([2.0e-6, 4.5e-6, 6.0e-6]) 
 ], "1/K") # Coeff. Thermal Expansion
 
-graphite.add_prop("melting_point", 3873.15, "K") # Sublimation temperature exceeds 3600 C
+graphite.add_prop("melting_point", 3873.15, "K") 
 
 # -------------------------------------------------------------------------
-# C. ELECTRICAL PROPERTIES (Optional)
+# C. ELECTRICAL PROPERTIES 
 # -------------------------------------------------------------------------
 graphite.add_prop("electrical_resistivity", [
     np.array([293.15, 773.15, 1273.15, 2273.15]),
-    np.array([14.0e-6, 11.0e-6, 12.5e-6, 16.0e-6]) # Drops initially (carrier excitation), then rises (phonon scattering)
+    np.array([14.0e-6, 11.0e-6, 12.5e-6, 16.0e-6]) 
 ], "Ohm-m")
 
 # -------------------------------------------------------------------------
-# D. METADATA (Static info - stays as single values)
+# D. METADATA 
 # -------------------------------------------------------------------------
 graphite.add_meta("carbon_content",      100.0) 
 graphite.add_meta("machinability_index", 0.0) # Highly abrasive dust; continuous non-ductile chip formation.
@@ -1868,11 +1853,10 @@ graphite.add_meta("weldability",         "Poor/Non-fusion") # Sublimes under hea
 
 # -------------------------------------------------------------------------
 # E. FATIGUE DATA (S-N Curves)
-#    Structure: { Temperature_K : }
 # -------------------------------------------------------------------------
 graphite.add_fatigue({
-    293.15: [ np.array([1e3, 1e5, 1e7]), np.array([27.0e6, 22.0e6, 18.0e6]) ], # Room Temp (R=0 tension test)
-    1253.15: [ np.array([1e3, 1e5, 1e7]), np.array([40.0e6, 32.0e6, 26.0e6]) ] # 980 C Vacuum (Scales with higher elevated UTS)
+    293.15: [ np.array([1e3, 1e5, 1e7]), np.array([27.0e6, 22.0e6, 18.0e6]) ], 
+    1253.15: [ np.array([1e3, 1e5, 1e7]), np.array([40.0e6, 32.0e6, 26.0e6]) ] 
 })
 
 # -------------------------------------------------------------------------
@@ -1888,23 +1872,22 @@ _default_registry.add_material(graphite)
 # =========================================================================
 
 # --- Carbon Fiber ---
-carbon_fiber = Material(name="Carbon Fiber PAN T300", category="Composite", default_condition="Standard Graphitized")
+
 # Sources:
 # 1. https://pmc.ncbi.nlm.nih.gov/articles/PMC9275789/
 # 2. https://ntrs.nasa.gov/api/citations/19970041399/downloads/19970041399.pdf
 # 3. https://info.ornl.gov/sites/publications/Files/Pub57518.pdf
+
+carbon_fiber = Material(name="Carbon Fiber PAN T300", category="Composite", default_condition="Standard Graphitized")
+
 # -------------------------------------------------------------------------
 # A. MECHANICAL PROPERTIES
 # -------------------------------------------------------------------------
-# Density varies by grade and graphitization; standard PAN T300 is roughly 1760 kg/m^3.
-# Negligible volume expansion up to 1922 K allows density to be treated as constant.
 carbon_fiber.add_prop("density", 1760.0, "kg/m^3")
 
-# Yield strength for CF is virtually identical to ultimate strength due to pure brittle failure mechanics.
-# Internal flaw healing allows strength retention and slight increase up to ~2273K in inert atmospheres.
 carbon_fiber.add_prop("yield_strength", [
-    np.array([293.15, 773.15, 1273.15, 1873.15, 2273.15]), # Temp in Kelvin
-    np.array([3530e6, 3550e6, 3600e6, 3650e6, 2800e6])     # Value in Pa
+    np.array([293.15, 773.15, 1273.15, 1873.15, 2273.15]), 
+    np.array([3530e6, 3550e6, 3600e6, 3650e6, 2800e6])     
 ], "Pa")
 
 carbon_fiber.add_prop("ultimate_strength", [
@@ -1912,19 +1895,16 @@ carbon_fiber.add_prop("ultimate_strength", [
     np.array([3530e6, 3550e6, 3600e6, 3650e6, 2800e6])
 ], "Pa")
 
-# Longitudinal Modulus remains remarkably stable, then degrades severely at ultra-high temperatures (>1273K).
 carbon_fiber.add_prop("elastic_modulus", [
     np.array([293.15, 773.15, 1273.15, 1873.15, 2273.15]),
     np.array([230e9, 230e9, 225e9, 150e9, 110e9])
 ], "Pa")
 
-# Shear modulus uniquely increases slightly up to 700K due to transverse expansion, then plateaus.
 carbon_fiber.add_prop("shear_modulus", [
     np.array([293.15, 700.00, 1273.15]),
     np.array([5.0e9, 5.5e9, 5.5e9])
 ], "Pa")
 
-# Major Poisson's Ratio remains generally stable across thermal operating ranges.
 carbon_fiber.add_prop("poisson_ratio", [
     np.array([293.15, 1273.15]),
     np.array([0.30, 0.30])
@@ -1933,38 +1913,33 @@ carbon_fiber.add_prop("poisson_ratio", [
 # -------------------------------------------------------------------------
 # B. THERMAL PROPERTIES
 # -------------------------------------------------------------------------
-# Thermal conductivity peaks around 500K, then plateaus 1200K-1900K due to Umklapp scattering.
 carbon_fiber.add_prop("thermal_conductivity", [
     np.array([293.15, 500.00, 1200.00, 1900.00]),
     np.array([10.5, 15.2, 18.0, 18.0])
 ], "W/m-K")
 
-# Specific Heat follows the highly non-linear graphitic polynomial curve approaching Dulong-Petit limit.
 carbon_fiber.add_prop("specific_heat", [
     np.array([293.15, 500.00, 1000.00, 1500.00, 2000.00]),
     np.array([710.0, 1050.0, 1600.0, 1850.0, 2000.0])
 ], "J/kg-K")
 
-# Negative CTE in the longitudinal direction driven by the out-of-plane Lifshitz membrane effect.
 carbon_fiber.add_prop("cte", [
     np.array([293.15, 773.15, 1273.15]),
     np.array([-0.50e-6, -0.65e-6, -0.80e-6])
 ], "1/K") # Coeff. Thermal Expansion
 
-# Carbon sublimes rather than melts at ambient atmospheric pressures; theoretical limit is ~3900K.
 carbon_fiber.add_prop("melting_point", 3900.0, "K")
 
 # -------------------------------------------------------------------------
-# C. ELECTRICAL PROPERTIES (Optional)
+# C. ELECTRICAL PROPERTIES 
 # -------------------------------------------------------------------------
-# Two-band graphitic model dictates a slight negative temperature coefficient initially.
 carbon_fiber.add_prop("electrical_resistivity", [
     np.array([293.15, 500.00, 1000.00]),
     np.array([1.5e-5, 1.4e-5, 1.3e-5])
 ], "Ohm-m")
 
 # -------------------------------------------------------------------------
-# D. METADATA (Static info - stays as single values)
+# D. METADATA 
 # -------------------------------------------------------------------------
 carbon_fiber.add_meta("carbon_content",      95.0) 
 carbon_fiber.add_meta("machinability_index", 15.0) # Poor machinability, highly abrasive to tooling
@@ -1976,8 +1951,8 @@ carbon_fiber.add_meta("weldability",         "Non-weldable")
 # E. FATIGUE DATA (S-N Curves)
 # -------------------------------------------------------------------------
 carbon_fiber.add_fatigue({
-    293.15: [ np.array([1e4, 1e5, 1e6]), np.array([3.1e9, 3.05e9, 3.0e9]) ], # Room Temp (Catastrophic flat curve)
-    393.15: [ np.array([1e4, 1e5, 1e6]), np.array([3.3e9, 3.25e9, 3.2e9]) ]  # Elevated Temp (Matrix softens, fiber alignment improves stiffness)
+    293.15: [ np.array([1e4, 1e5, 1e6]), np.array([3.1e9, 3.05e9, 3.0e9]) ], 
+    393.15: [ np.array([1e4, 1e5, 1e6]), np.array([3.3e9, 3.25e9, 3.2e9]) ]  
 })
 
 # -------------------------------------------------------------------------
@@ -1985,13 +1960,12 @@ carbon_fiber.add_fatigue({
 # -------------------------------------------------------------------------
 _default_registry.add_material(carbon_fiber)
 
-
-
-
 # --- Fiberglass (G-10 Aerospace Grade) ---
-# Source: 
+
+# Sources: 
 # 1. https://ncsx.pppl.gov/NCSX_Engineering/CloseOut_Documentation/Brown/Jobs8203_1803/Design_Integration_Files/NCSX%20-%202008/Cryostat/G10CR-G11CR-Properties1.pdf
 # 2. https://www.tainstruments.com/pdf/literature/EF035.pdf
+
 fiberglass = Material(name="Fiberglass G-10/FR-4", category="Composite", default_condition="Woven Epoxy Laminate")
 
 # -------------------------------------------------------------------------
@@ -2000,8 +1974,8 @@ fiberglass = Material(name="Fiberglass G-10/FR-4", category="Composite", default
 fiberglass.add_prop("density", 1835.0, "kg/m^3")
 
 fiberglass.add_prop("yield_strength", [
-    np.array([77.0, 293.15, 373.15]), # Temp in Kelvin
-    np.array([600.0e6, 275.0e6, 150.0e6])     # Value in Pa
+    np.array([77.0, 293.15, 373.15]), 
+    np.array([600.0e6, 275.0e6, 150.0e6])   
 ], "Pa")
 
 fiberglass.add_prop("ultimate_strength", [
@@ -2042,10 +2016,10 @@ fiberglass.add_prop("cte", [
     np.array([5.0e-6, 9.6e-6, 12.0e-6])
 ], "1/K") # Coeff. Thermal Expansion
 
-fiberglass.add_prop("melting_point", 423.15, "K") # Represents Glass Transition (Tg) limit for thermosets
+fiberglass.add_prop("melting_point", 423.15, "K") 
 
 # -------------------------------------------------------------------------
-# C. ELECTRICAL PROPERTIES (Optional)
+# C. ELECTRICAL PROPERTIES
 # -------------------------------------------------------------------------
 fiberglass.add_prop("electrical_resistivity", [
     np.array([77.0, 293.15, 373.15]),
@@ -2053,17 +2027,16 @@ fiberglass.add_prop("electrical_resistivity", [
 ], "Ohm-m")
 
 # -------------------------------------------------------------------------
-# D. METADATA (Static info - stays as single values)
+# D. METADATA 
 # -------------------------------------------------------------------------
 fiberglass.add_meta("carbon_content",      0.0) 
-fiberglass.add_meta("machinability_index", 10.0) # 0-100 Scale (100 = Free-machining brass)
+fiberglass.add_meta("machinability_index", 10.0)
 fiberglass.add_meta("heat_treatable",      False)
 fiberglass.add_meta("magnetic",            False)
 fiberglass.add_meta("weldability",         "None")
 
 # -------------------------------------------------------------------------
 # E. FATIGUE DATA (S-N Curves)
-#    Structure: { Temperature_K : }
 # -------------------------------------------------------------------------
 fiberglass.add_fatigue({
     293.15: [ np.array([1e4, 1e5, 1e6]), np.array([300.0e6, 250.0e6, 200.0e6]) ], # Room Temp
