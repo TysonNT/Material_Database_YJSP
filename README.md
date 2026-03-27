@@ -528,8 +528,7 @@ python -m build
 python -m twine upload dist/*`
 
 **API Token:** 
-
-pypi-AgEIcHlwaS5vcmcCJDRhNmZkM2RlLWQwODgtNDFlOS1hNWExLTA4YmFjZTU5YTQ0ZgACKlszLCIwNTJmMmI3Mi1mZWY1LTQ4YjUtYTllYS02MWVjMjhkNmM1NTYiXQAABiAcdtWJXCTxbiteRQ0rpWwbktz73T_rK8Vs8rIc02f9xw
+Email: tyson26tran@gmail.com for it
 
 NOTE: When you paste the token into the terminal it actually won’t physically appear just press enter and it should work
 
