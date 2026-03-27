@@ -72,22 +72,23 @@ class Material:
         self.fatigue: Dict[str, FatigueProfile] = {}
         self.metadata: Dict[str, Any] = {}
 
-    def add_prop(self, key: str, data, units: str = "", type: str = None):
-        """Add a standard table/value property for a specific type/condition."""
-        cond = type if type else self.default_condition
+    def add_prop(self, key: str, data, units: str = "", condition: str = None):
+        """Add a standard table/value property for a specific condition."""
+        cond = condition if condition else self.default_condition
         if key not in self.properties:
             self.properties[key] = {}
         self.properties[key][cond] = Prop(key, data, units)
 
-    def add_custom_prop(self, prop_object: Prop, type: str = None):
-        cond = type if type else self.default_condition
+
+    def add_custom_prop(self, prop_object: Prop, condition: str = None):
+        cond = condition if condition else self.default_condition
         key = prop_object.name
         if key not in self.properties:
             self.properties[key] = {}
         self.properties[key][cond] = prop_object
 
-    def add_fatigue(self, curve_data: Dict[float, List[np.ndarray]], type: str = None):
-        cond = type if type else self.default_condition
+    def add_fatigue(self, curve_data: Dict[float, List[np.ndarray]], condition: str = None):
+        cond = condition if condition else self.default_condition
         self.fatigue[cond] = FatigueProfile(curve_data)
 
     def add_meta(self, key: str, value):

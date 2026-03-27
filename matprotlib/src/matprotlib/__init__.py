@@ -1878,7 +1878,7 @@ _default_registry.add_material(graphite)
 # 2. https://ntrs.nasa.gov/api/citations/19970041399/downloads/19970041399.pdf
 # 3. https://info.ornl.gov/sites/publications/Files/Pub57518.pdf
 
-carbon_fiber = Material(name="Carbon Fiber PAN T300", category="Composite", default_condition="Standard Graphitized")
+carbon_fiber = Material(name="Carbon Fiber", category="Composite", default_condition="Standard Graphitized")
 
 # -------------------------------------------------------------------------
 # A. MECHANICAL PROPERTIES
@@ -1966,7 +1966,7 @@ _default_registry.add_material(carbon_fiber)
 # 1. https://ncsx.pppl.gov/NCSX_Engineering/CloseOut_Documentation/Brown/Jobs8203_1803/Design_Integration_Files/NCSX%20-%202008/Cryostat/G10CR-G11CR-Properties1.pdf
 # 2. https://www.tainstruments.com/pdf/literature/EF035.pdf
 
-fiberglass = Material(name="Fiberglass G-10/FR-4", category="Composite", default_condition="Woven Epoxy Laminate")
+fiberglass = Material(name="Fiberglass", category="Composite", default_condition="Woven Epoxy Laminate")
 
 # -------------------------------------------------------------------------
 # A. MECHANICAL PROPERTIES
