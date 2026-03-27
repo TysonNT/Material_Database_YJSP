@@ -93,14 +93,22 @@ class Material:
     def add_meta(self, key: str, value):
         self.metadata[key] = value
 
-    def get(self, prop_name: str, T: float = 298.0, type: str = None) -> float:
-        """Fetch a property, optionally at a specific temperature or type."""
-        target_cond = type if type else self.default_condition
+    def get(self, prop_name: str, T: float = 298.0, condition: str = None) -> float:
+        target_cond = condition if condition else self.default_condition
         
         if prop_name not in self.properties:
             raise AttributeError(f"Material '{self.name}' has no property '{prop_name}'")
+            
+        # --- NEW: Fallback logic ---
         if target_cond not in self.properties[prop_name]:
-            raise AttributeError(f"'{prop_name}' found, but missing data for type '{target_cond}'.")
+            # If the specific condition (e.g. "Aged") is missing, try the material's original baseline
+            if "Annealed" in self.properties[prop_name]: 
+                 target_cond = "Annealed"
+            elif "Standard" in self.properties[prop_name]:
+                 target_cond = "Standard"
+            else:
+                 # Just grab whatever the first available condition is as a last resort
+                 target_cond = list(self.properties[prop_name].keys())[0]
 
         return self.properties[prop_name][target_cond].get(T)
 
