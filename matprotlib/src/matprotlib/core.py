@@ -93,6 +93,12 @@ class Material:
 
     def add_meta(self, key: str, value):
         self.metadata[key] = value
+    
+    def get_meta(self, key: str):
+        """Fetch a specific piece of metadata."""
+        if key not in self.metadata:
+            raise KeyError(f"Metadata '{key}' not found in material '{self.name}'.")
+        return self.metadata[key]
 
     def get(self, prop_name: str, T: float = 298.0, condition: str = None) -> float:
         target_cond = condition if condition else self.default_condition

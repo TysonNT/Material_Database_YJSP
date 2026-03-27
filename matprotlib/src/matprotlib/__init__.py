@@ -95,7 +95,7 @@ from .core import Material, MaterialRegistry
 # # -------------------------------------------------------------------------
 # # F. REGISTER (Save to Database)
 # # -------------------------------------------------------------------------
-# # db.add_material(new_mat)
+# # _default_registry.add_material(new_mat)
 
 # =========================================================================
 # TABLE OF CONTENTS
@@ -1771,102 +1771,6 @@ _default_registry.add_material(inc718)
 
 # =========================================================================
 # =========================================================================
-# [CERM] CERAMICS & NON-METALS
-# =========================================================================
-# =========================================================================
-
-# --- Graphite ---
-
-# Sources:
-# 1. https://ntrs.nasa.gov/api/citations/19700032783/downloads/19700032783.pdf 
-# 2. https://www.cfccarbon.com/news/thermal-properties-of-graphite.html
-# 3. https://jinsuncarbon.com/graphite-electrical-resistivity/
-
-graphite = Material(name="Graphite", category="Ceramic", default_condition="Isomolded/Isotropic")
-
-# -------------------------------------------------------------------------
-# A. MECHANICAL PROPERTIES
-# -------------------------------------------------------------------------
-graphite.add_prop("density", 1850.0, "kg/m^3")
-
-graphite.add_prop("yield_strength", [
-    np.array([293.15, 1273.15, 2773.15]),
-    np.array([30.0e6, 45.0e6, 60.0e6])    
-], "Pa")
-
-graphite.add_prop("ultimate_strength", [
-    np.array([293.15, 1273.15, 2773.15]),
-    np.array([30.0e6, 45.0e6, 60.0e6])    
-], "Pa")
-
-graphite.add_prop("elastic_modulus", [
-    np.array([293.15, 1273.15, 1773.15, 2273.15]),
-    np.array([10.5e9, 11.5e9, 12.0e9, 11.0e9]) 
-], "Pa")
-
-graphite.add_prop("shear_modulus", [
-    np.array([293.15, 1273.15, 1773.15, 2273.15]),
-    np.array([4.5e9, 5.0e9, 5.3e9, 4.8e9]) 
-], "Pa")
-
-graphite.add_prop("poisson_ratio", [
-    np.array([293.15, 1273.15, 2273.15]),
-    np.array([0.22, 0.25, 0.30]) 
-], "") 
-
-# -------------------------------------------------------------------------
-# B. THERMAL PROPERTIES
-# -------------------------------------------------------------------------
-graphite.add_prop("thermal_conductivity", [
-    np.array([293.15, 773.15, 1273.15]),
-    np.array([120.0, 70.0, 45.0]) 
-], "W/m-K")
-
-graphite.add_prop("specific_heat", [
-    np.array([6.0740e1, 1.4260e2, 2.3630e2, 2.5770e2, 2.9200e2, 3.1470e2, 3.5050e2, 3.8630e2, 4.2350e2, 4.5790e2, 5.0100e2, 5.4400e2, 5.8710e2, 6.3020e2, 6.7700e2, 7.1640e2, 7.5950e2, 8.1710e2, 8.9650e2, 9.9760e2, 1.1350e3, 1.2940e3, 1.4530e3, 1.6130e3, 1.7720e3, 1.9310e3, 2.0910e3, 2.2500e3, 2.4100e3, 2.5690e3, 2.7280e3, 2.8850e3, 3.0470e3, 3.2060e3, 3.3510e3, 3.4660e3, 3.5390e3, 3.6250e3]),
-    np.array([1.5600e2, 2.9300e2, 4.0110e2, 4.8250e2, 5.7460e2, 6.7290e2, 7.7160e2, 8.7280e2, 9.5950e2, 1.0440e3, 1.1360e3, 1.2210e3, 1.3040e3, 1.3840e3, 1.4630e3, 1.5590e3, 1.6290e3, 1.7090e3, 1.7930e3, 1.8720e3, 1.9510e3, 2.0160e3, 2.0630e3, 2.0980e3, 2.1220e3, 2.1410e3, 2.1570e3, 2.1670e3, 2.1770e3, 2.1850e3, 2.1900e3, 2.2050e3, 2.2470e3, 2.3120e3, 2.3880e3, 2.4640e3, 2.5190e3, 2.6050e3]) # Rises rapidly then asymptotes near plateau of 2.2 kJ/kg-K
-], "J/kg-K")
-
-graphite.add_prop("cte", [
-    np.array([293.15, 1273.15, 2273.15]),
-    np.array([2.0e-6, 4.5e-6, 6.0e-6]) 
-], "1/K") # Coeff. Thermal Expansion
-
-graphite.add_prop("melting_point", 3873.15, "K") 
-
-# -------------------------------------------------------------------------
-# C. ELECTRICAL PROPERTIES 
-# -------------------------------------------------------------------------
-graphite.add_prop("electrical_resistivity", [
-    np.array([293.15, 773.15, 1273.15, 2273.15]),
-    np.array([14.0e-6, 11.0e-6, 12.5e-6, 16.0e-6]) 
-], "Ohm-m")
-
-# -------------------------------------------------------------------------
-# D. METADATA 
-# -------------------------------------------------------------------------
-graphite.add_meta("carbon_content",      100.0) 
-graphite.add_meta("machinability_index", 0.0) # Highly abrasive dust; continuous non-ductile chip formation.
-graphite.add_meta("heat_treatable",      True) # Graphitization temp definitively alters resistivity and density
-graphite.add_meta("magnetic",            False) # Pure pristine graphite is highly diamagnetic
-graphite.add_meta("weldability",         "Poor/Non-fusion") # Sublimes under heat; must be sealed via brazing
-
-# -------------------------------------------------------------------------
-# E. FATIGUE DATA (S-N Curves)
-# -------------------------------------------------------------------------
-graphite.add_fatigue({
-    293.15: [ np.array([1e3, 1e5, 1e7]), np.array([27.0e6, 22.0e6, 18.0e6]) ], 
-    1253.15: [ np.array([1e3, 1e5, 1e7]), np.array([40.0e6, 32.0e6, 26.0e6]) ] 
-})
-
-# -------------------------------------------------------------------------
-# F. REGISTER (Save to Database)
-# -------------------------------------------------------------------------
-_default_registry.add_material(graphite)
-
-
-# =========================================================================
-# =========================================================================
 # [COMP] COMPOSITES
 # =========================================================================
 # =========================================================================
@@ -2048,6 +1952,100 @@ fiberglass.add_fatigue({
 # -------------------------------------------------------------------------
 _default_registry.add_material(fiberglass)
 
+# =========================================================================
+# =========================================================================
+# [CERM] CERAMICS & NON-METALS
+# =========================================================================
+# =========================================================================
+
+# --- Graphite ---
+
+# Sources:
+# 1. https://ntrs.nasa.gov/api/citations/19700032783/downloads/19700032783.pdf 
+# 2. https://www.cfccarbon.com/news/thermal-properties-of-graphite.html
+# 3. https://jinsuncarbon.com/graphite-electrical-resistivity/
+
+graphite = Material(name="Graphite", category="Ceramic", default_condition="Isomolded/Isotropic")
+
+# -------------------------------------------------------------------------
+# A. MECHANICAL PROPERTIES
+# -------------------------------------------------------------------------
+graphite.add_prop("density", 1850.0, "kg/m^3")
+
+graphite.add_prop("yield_strength", [
+    np.array([293.15, 1273.15, 2773.15]),
+    np.array([30.0e6, 45.0e6, 60.0e6])    
+], "Pa")
+
+graphite.add_prop("ultimate_strength", [
+    np.array([293.15, 1273.15, 2773.15]),
+    np.array([30.0e6, 45.0e6, 60.0e6])    
+], "Pa")
+
+graphite.add_prop("elastic_modulus", [
+    np.array([293.15, 1273.15, 1773.15, 2273.15]),
+    np.array([10.5e9, 11.5e9, 12.0e9, 11.0e9]) 
+], "Pa")
+
+graphite.add_prop("shear_modulus", [
+    np.array([293.15, 1273.15, 1773.15, 2273.15]),
+    np.array([4.5e9, 5.0e9, 5.3e9, 4.8e9]) 
+], "Pa")
+
+graphite.add_prop("poisson_ratio", [
+    np.array([293.15, 1273.15, 2273.15]),
+    np.array([0.22, 0.25, 0.30]) 
+], "") 
+
+# -------------------------------------------------------------------------
+# B. THERMAL PROPERTIES
+# -------------------------------------------------------------------------
+graphite.add_prop("thermal_conductivity", [
+    np.array([293.15, 773.15, 1273.15]),
+    np.array([120.0, 70.0, 45.0]) 
+], "W/m-K")
+
+graphite.add_prop("specific_heat", [
+    np.array([6.0740e1, 1.4260e2, 2.3630e2, 2.5770e2, 2.9200e2, 3.1470e2, 3.5050e2, 3.8630e2, 4.2350e2, 4.5790e2, 5.0100e2, 5.4400e2, 5.8710e2, 6.3020e2, 6.7700e2, 7.1640e2, 7.5950e2, 8.1710e2, 8.9650e2, 9.9760e2, 1.1350e3, 1.2940e3, 1.4530e3, 1.6130e3, 1.7720e3, 1.9310e3, 2.0910e3, 2.2500e3, 2.4100e3, 2.5690e3, 2.7280e3, 2.8850e3, 3.0470e3, 3.2060e3, 3.3510e3, 3.4660e3, 3.5390e3, 3.6250e3]),
+    np.array([1.5600e2, 2.9300e2, 4.0110e2, 4.8250e2, 5.7460e2, 6.7290e2, 7.7160e2, 8.7280e2, 9.5950e2, 1.0440e3, 1.1360e3, 1.2210e3, 1.3040e3, 1.3840e3, 1.4630e3, 1.5590e3, 1.6290e3, 1.7090e3, 1.7930e3, 1.8720e3, 1.9510e3, 2.0160e3, 2.0630e3, 2.0980e3, 2.1220e3, 2.1410e3, 2.1570e3, 2.1670e3, 2.1770e3, 2.1850e3, 2.1900e3, 2.2050e3, 2.2470e3, 2.3120e3, 2.3880e3, 2.4640e3, 2.5190e3, 2.6050e3]) # Rises rapidly then asymptotes near plateau of 2.2 kJ/kg-K
+], "J/kg-K")
+
+graphite.add_prop("cte", [
+    np.array([293.15, 1273.15, 2273.15]),
+    np.array([2.0e-6, 4.5e-6, 6.0e-6]) 
+], "1/K") # Coeff. Thermal Expansion
+
+graphite.add_prop("melting_point", 3873.15, "K") 
+
+# -------------------------------------------------------------------------
+# C. ELECTRICAL PROPERTIES 
+# -------------------------------------------------------------------------
+graphite.add_prop("electrical_resistivity", [
+    np.array([293.15, 773.15, 1273.15, 2273.15]),
+    np.array([14.0e-6, 11.0e-6, 12.5e-6, 16.0e-6]) 
+], "Ohm-m")
+
+# -------------------------------------------------------------------------
+# D. METADATA 
+# -------------------------------------------------------------------------
+graphite.add_meta("carbon_content",      100.0) 
+graphite.add_meta("machinability_index", 0.0) # Highly abrasive dust; continuous non-ductile chip formation.
+graphite.add_meta("heat_treatable",      True) # Graphitization temp definitively alters resistivity and density
+graphite.add_meta("magnetic",            False) # Pure pristine graphite is highly diamagnetic
+graphite.add_meta("weldability",         "Poor/Non-fusion") # Sublimes under heat; must be sealed via brazing
+
+# -------------------------------------------------------------------------
+# E. FATIGUE DATA (S-N Curves)
+# -------------------------------------------------------------------------
+graphite.add_fatigue({
+    293.15: [ np.array([1e3, 1e5, 1e7]), np.array([27.0e6, 22.0e6, 18.0e6]) ], 
+    1253.15: [ np.array([1e3, 1e5, 1e7]), np.array([40.0e6, 32.0e6, 26.0e6]) ] 
+})
+
+# -------------------------------------------------------------------------
+# F. REGISTER (Save to Database)
+# -------------------------------------------------------------------------
+_default_registry.add_material(graphite)
 
 # =========================================================================
 # MODULE-LEVEL API & FACTORY FUNCTIONS
@@ -2096,3 +2094,18 @@ def Steel(grade: str, type: str = None) -> Material:
     """Shortcut for fetching Steel alloys (e.g., mp.Steel('1018 Carbon'))."""
     # Handles inputs like mp.Steel("1018 Carbon") -> "1018 Carbon Steel"
     return get_material(f"{grade} Steel", type=type)
+
+def Stainless(grade: str, type: str = None) -> Material:
+    """Shortcut for Stainless Steel alloys (e.g., mp.Stainless('304'))."""
+    # Includes a quick catch for 17-4 PH since it uses "SS" instead of "Stainless Steel"
+    if "17-4" in grade:
+        return get_material(f"SS {grade}", type=type)
+    return get_material(f"Stainless Steel {grade}", type=type)
+
+def Copper(grade: str, type: str = None) -> Material:
+    """Shortcut for Copper alloys (e.g., mp.Copper('C17200'))."""
+    return get_material(f"Copper {grade}", type=type)
+
+def GrCop(grade: str, type: str = None) -> Material:
+    """Shortcut for NASA GrCop alloys (e.g., mp.GrCop('42'))."""
+    return get_material(f"GrCop-{grade}", type=type)

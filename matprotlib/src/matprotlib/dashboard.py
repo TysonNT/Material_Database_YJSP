@@ -16,23 +16,23 @@ st.title("🔬 MatProtLib: Interactive Database")
 with st.sidebar:
     st.header("Control Panel")
     
-    # Dropdown for Materials (automatically pulls from your database!)
+    # Dropdown for Materials 
     available_materials = mp.list_materials()
     selected_name = st.selectbox(
         "Select Material", 
         available_materials,
-        format_func=format_display_name  # <-- Applies the clean formatting
+        format_func=format_display_name  
     )
     
     # Fetch the chosen alloy
     alloy = mp.get_material(selected_name)
     
-    # Dropdown for Properties (dynamically looks at what the alloy has)
+    # Dropdown for Properties 
     available_props = list(alloy.properties.keys())
     selected_prop = st.selectbox(
         "Select Property", 
         available_props,
-        format_func=format_display_name  # <-- Applies the clean formatting
+        format_func=format_display_name  
     )
     
     st.markdown("---")
@@ -46,17 +46,16 @@ values = [alloy.get(selected_prop, T=t) for t in temps]
 # Put the data into a Pandas DataFrame so it's easy to graph and export
 df = pd.DataFrame({
     "Temperature (K)": temps,
-    format_display_name(selected_prop): values  # <-- Reused the helper for the graph label
+    format_display_name(selected_prop): values  
 }).set_index("Temperature (K)")
 
 # --- 4. Main View: Graph & Export ---
-# Reused the helper for the clean title
 st.subheader(f"{format_display_name(selected_name)} - {format_display_name(selected_prop)}")
 
 # Draw the interactive line chart
 st.line_chart(df)
 
-# The CSV Export Button (kept the raw file name for easier coding integration later)
+# The CSV Export Button 
 csv_data = df.to_csv().encode('utf-8')
 st.download_button(
     label="📥 Export Data to CSV",
